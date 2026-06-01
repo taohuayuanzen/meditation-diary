@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>准备冥想 · 禅心</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="atmosphere"></div>
+
+<div class="app-container">
+  <div class="page-content">
+
+    <div class="setup-section">
+      <div class="setup-label">冥想类型</div>
+      <div class="type-scroll" id="type-scroll"></div>
+    </div>
+
+    <div class="setup-section">
+      <div class="setup-label">冥想时长</div>
+      <div class="duration-presets" id="duration-presets"></div>
+    </div>
+
+    <div class="setup-section">
+      <div class="setup-label">结束提示音</div>
+      <div class="sound-scroll" id="sound-scroll"></div>
+    </div>
+
+    <button class="begin-btn" id="begin-btn" onclick="beginMeditation()" disabled>开始</button>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <a class="tab-item" href="index.html">
+    <span class="tab-icon">🏔</span>
+    <span class="tab-label">首页</span>
+  </a>
+  <a class="tab-item active" href="meditate.html">
+    <span class="tab-icon">🕯</span>
+    <span class="tab-label">冥想</span>
+  </a>
+  <a class="tab-item" href="journal.html">
+    <span class="tab-icon">📖</span>
+    <span class="tab-label">日记</span>
+  </a>
+  <a class="tab-item" href="profile.html">
+    <span class="tab-icon">🙏</span>
+    <span class="tab-label">我的</span>
+  </a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Type Picker Sheet -->
+<div class="setup-sheet-overlay" id="type-sheet-overlay" onclick="closeTypeSheet()">
+  <div class="setup-sheet" onclick="event.stopPropagation()">
+    <div class="setup-sheet-handle"></div>
+    <div class="setup-sheet-title">选择冥想类型</div>
+    <div class="type-picker-list" id="type-picker-list"></div>
+  </div>
+</div>
+
+<!-- Custom Duration Sheet -->
+<div class="setup-sheet-overlay" id="dur-sheet-overlay" onclick="closeDurSheet()">
+  <div class="setup-sheet" onclick="event.stopPropagation()">
+    <div class="setup-sheet-handle"></div>
+    <div class="setup-sheet-title">自定义时长</div>
+    <div class="custom-dur-section">
+      <div class="custom-dur-value" id="custom-dur-value">20</div>
+      <div class="custom-dur-unit">分钟</div>
+      <input type="range" class="custom-dur-slider" id="custom-dur-slider"
+             min="5" max="120" step="5" value="20" oninput="onCustomDurChange(this.value)">
+      <div class="custom-dur-labels">
+        <span>5分钟</span>
+        <span>120分钟</span>
+      </div>
+      <button class="custom-dur-confirm" onclick="confirmCustomDur()">确定</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/constants.js"></script>
+<script src="js/store.js"></script>
+<script src="js/session.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/meditate.js"></script>
+</body>
+</html>

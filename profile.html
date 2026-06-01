@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的 · 禅心</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="atmosphere"></div>
+
+<div class="app-container">
+  <!-- 页面顶栏：标题 + 设置按钮 -->
+  <div class="profile-top-bar">
+    <h1 class="profile-title">我的</h1>
+    <a class="nav-btn" href="settings.html" title="设置">⚙️</a>
+  </div>
+
+  <div class="page-content">
+    <!-- 数据概况 -->
+    <div class="profile-stats">
+      <div class="profile-stat-highlight">
+        <svg class="wheat-deco wheat-left" viewBox="0 0 60 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 左侧稻穗 -->
+          <path d="M30 78 C30 78 30 50 30 20" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <!-- 谷粒：从下到上，从大到小 -->
+          <ellipse cx="22" cy="62" rx="5" ry="9" transform="rotate(-25 22 62)"/>
+          <ellipse cx="38" cy="58" rx="4.5" ry="8" transform="rotate(25 38 58)"/>
+          <ellipse cx="20" cy="46" rx="4.5" ry="8" transform="rotate(-30 20 46)"/>
+          <ellipse cx="40" cy="42" rx="4" ry="7.5" transform="rotate(30 40 42)"/>
+          <ellipse cx="22" cy="30" rx="4" ry="7" transform="rotate(-30 22 30)"/>
+          <ellipse cx="38" cy="27" rx="3.5" ry="6.5" transform="rotate(28 38 27)"/>
+          <ellipse cx="26" cy="16" rx="3" ry="6" transform="rotate(-20 26 16)"/>
+          <!-- 芒须 -->
+          <line x1="22" y1="53" x2="12" y2="46" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="38" y1="50" x2="48" y2="43" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="20" y1="38" x2="10" y2="32" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="40" y1="35" x2="50" y2="29" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="22" y1="23" x2="14" y2="17" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="38" y1="21" x2="46" y2="15" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+        <div class="profile-stat-highlight-inner">
+          <div class="profile-stat-highlight-value" id="p-streak">0</div>
+          <div class="profile-stat-highlight-label">连续天数</div>
+        </div>
+        <svg class="wheat-deco wheat-right" viewBox="0 0 60 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 右侧稻穗（镜像） -->
+          <path d="M30 78 C30 78 30 50 30 20" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="22" cy="62" rx="5" ry="9" transform="rotate(-25 22 62)"/>
+          <ellipse cx="38" cy="58" rx="4.5" ry="8" transform="rotate(25 38 58)"/>
+          <ellipse cx="20" cy="46" rx="4.5" ry="8" transform="rotate(-30 20 46)"/>
+          <ellipse cx="40" cy="42" rx="4" ry="7.5" transform="rotate(30 40 42)"/>
+          <ellipse cx="22" cy="30" rx="4" ry="7" transform="rotate(-30 22 30)"/>
+          <ellipse cx="38" cy="27" rx="3.5" ry="6.5" transform="rotate(28 38 27)"/>
+          <ellipse cx="26" cy="16" rx="3" ry="6" transform="rotate(-20 26 16)"/>
+          <line x1="22" y1="53" x2="12" y2="46" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="38" y1="50" x2="48" y2="43" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="20" y1="38" x2="10" y2="32" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="40" y1="35" x2="50" y2="29" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="22" y1="23" x2="14" y2="17" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+          <line x1="38" y1="21" x2="46" y2="15" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="profile-stat-row">
+        <div class="profile-stat-item">
+          <div class="profile-stat-value" id="p-total">0</div>
+          <div class="profile-stat-label">总天数</div>
+        </div>
+        <div class="profile-stat-item">
+          <div class="profile-stat-value" id="p-minutes">0</div>
+          <div class="profile-stat-label">总分钟</div>
+        </div>
+        <div class="profile-stat-item">
+          <div class="profile-stat-value" id="p-month">0</div>
+          <div class="profile-stat-label">总次数</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 冥想日历 -->
+    <div class="calendar-section">
+      <div class="calendar-header">
+        <button class="calendar-nav-btn" onclick="changeMonth(-1)">‹</button>
+        <div class="calendar-title-group">
+          <span class="calendar-month-label" id="calendar-month-label"></span>
+          <span class="calendar-month-sub" id="calendar-month-sub"></span>
+        </div>
+        <button class="calendar-nav-btn" onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="calendar-weekdays">
+        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+      </div>
+      <div class="calendar-days" id="calendar-days"></div>
+    </div>
+
+    <!-- 选中日期的记录列表 -->
+    <div class="calendar-day-detail" id="calendar-day-detail"></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <a class="tab-item" href="index.html">
+    <span class="tab-icon">🏔</span>
+    <span class="tab-label">首页</span>
+  </a>
+  <a class="tab-item" href="meditate.html">
+    <span class="tab-icon">🕯</span>
+    <span class="tab-label">冥想</span>
+  </a>
+  <a class="tab-item" href="journal.html">
+    <span class="tab-icon">📖</span>
+    <span class="tab-label">日记</span>
+  </a>
+  <a class="tab-item active" href="profile.html">
+    <span class="tab-icon">🙏</span>
+    <span class="tab-label">我的</span>
+  </a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/constants.js"></script>
+<script src="js/store.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>

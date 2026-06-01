@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>冥想中 · 禅心</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="immersive-body">
+
+<div class="atmosphere immersive-atmosphere"></div>
+
+<div class="immersive-container">
+  <div class="timer-screen">
+    <div class="timer-type-label" id="timer-type-label">冥想</div>
+
+    <div class="timer-ring-container">
+      <div class="breath-circle"></div>
+      <svg class="timer-ring-svg" viewBox="0 0 260 260">
+        <circle class="timer-ring-bg" cx="130" cy="130" r="120"/>
+        <circle class="timer-ring-progress" id="timer-progress" cx="130" cy="130" r="120"
+          stroke-dasharray="754" stroke-dashoffset="0"/>
+      </svg>
+      <div class="timer-display">
+        <div class="timer-time" id="timer-time">10:00</div>
+        <div class="timer-breath-hint" id="breath-hint">吸气...</div>
+      </div>
+    </div>
+
+    <div class="timer-controls">
+      <button class="timer-ctrl-btn" onclick="cancelMeditation()" title="取消">✕</button>
+      <button class="timer-ctrl-btn primary" id="pause-btn" onclick="togglePause()" title="暂停">❚❚</button>
+      <button class="timer-ctrl-btn" onclick="finishMeditation()" title="完成">✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="confirm-overlay" id="confirm-modal">
+  <div class="confirm-box">
+    <h3>确认取消？</h3>
+    <p>当前冥想将不会被记录</p>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" onclick="closeConfirm()">继续冥想</button>
+      <button class="confirm-ok" onclick="confirmCancel()">确认取消</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/constants.js"></script>
+<script src="js/store.js"></script>
+<script src="js/session.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/timer.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>冥想复盘 · 禅心</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="immersive-body">
+
+<div class="atmosphere immersive-atmosphere"></div>
+
+<div class="immersive-container">
+  <div class="reflection-header">
+    <h1>冥想结束</h1>
+    <p id="reflection-duration">本次冥想 10 分钟</p>
+  </div>
+
+  <div class="setup-section">
+    <div class="setup-label">此刻心情</div>
+    <div class="mood-grid" id="mood-after-grid"></div>
+  </div>
+
+  <div class="reflection-section">
+    <div class="setup-label">冥想感悟</div>
+    <textarea class="insight-textarea" id="insight-text" placeholder="写下此刻的感受、觉察或领悟..."></textarea>
+  </div>
+
+  <div class="reflection-actions">
+    <button class="save-btn" onclick="saveEntry()">保存记录</button>
+    <button class="discard-btn" onclick="goBackToMeditate()">放弃记录</button>
+  </div>
+</div>
+
+<script src="js/constants.js"></script>
+<script src="js/store.js"></script>
+<script src="js/session.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/reflection.js"></script>
+</body>
+</html>

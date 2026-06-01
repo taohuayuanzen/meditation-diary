@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日记 · 禅心</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="atmosphere"></div>
+
+<div class="app-container">
+  <div class="page-content">
+    <div class="journal-header">
+      <div class="journal-month-nav">
+        <button class="journal-month-btn" onclick="changeMonth(-1)">‹</button>
+        <h1 id="journal-month-label"></h1>
+        <button class="journal-month-btn" onclick="changeMonth(1)">›</button>
+      </div>
+    </div>
+
+    <div class="journal-filters" id="journal-filters"></div>
+
+    <div id="journal-entries"></div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal-sheet" id="detail-sheet"></div>
+</div>
+
+<!-- Share Modal -->
+<div class="modal-overlay" id="share-modal">
+  <div class="modal-sheet" id="share-sheet"></div>
+</div>
+
+<div class="tab-bar">
+  <a class="tab-item" href="index.html">
+    <span class="tab-icon">🏔</span>
+    <span class="tab-label">首页</span>
+  </a>
+  <a class="tab-item" href="meditate.html">
+    <span class="tab-icon">🕯</span>
+    <span class="tab-label">冥想</span>
+  </a>
+  <a class="tab-item active" href="journal.html">
+    <span class="tab-icon">📖</span>
+    <span class="tab-label">日记</span>
+  </a>
+  <a class="tab-item" href="profile.html">
+    <span class="tab-icon">🙏</span>
+    <span class="tab-label">我的</span>
+  </a>
+</div>
+
+<div class="toast" id="toast"></div>
+<canvas class="share-canvas" id="share-canvas" width="600" height="800"></canvas>
+
+<script src="js/constants.js"></script>
+<script src="js/store.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/journal.js"></script>
+</body>
+</html>
