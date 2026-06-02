@@ -94,14 +94,17 @@ function changeMonth(delta) {
 }
 
 // ===== Detail Modal =====
+
+// formatMoodDisplay is defined in utils.js (shared across pages)
+
 function showDetail(id) {
   const entries = loadEntries();
   const entry = entries.find(e => e.id === id);
   if (!entry) return;
 
   const type = ALL_TYPES.find(t => t.id === entry.type) || ALL_TYPES[0];
-  const moodBefore = MOODS.find(m => m.id === entry.moodBefore);
-  const moodAfter = MOODS.find(m => m.id === entry.moodAfter);
+  const moodBefore = formatMoodDisplay(entry.moodBefore);
+  const moodAfter = formatMoodDisplay(entry.moodAfter);
 
   const sheet = document.getElementById('detail-sheet');
   sheet.innerHTML = `
@@ -173,11 +176,19 @@ function showShare(id) {
   closeDetail();
 
   const type = ALL_TYPES.find(t => t.id === entry.type) || ALL_TYPES[0];
-  const moodBefore = MOODS.find(m => m.id === entry.moodBefore);
-  const moodAfter = MOODS.find(m => m.id === entry.moodAfter);
+  const moodBefore = formatMoodDisplay(entry.moodBefore);
+  const moodAfter = formatMoodDisplay(entry.moodAfter);
 
   const insightText = entry.insight || '在宁静中遇见自己';
   const dateStr = formatDate(entry.date);
+
+  // Build mood text for share
+  let moodText = '';
+  if (moodBefore && moodAfter) {
+    moodText = `${moodBefore.icon} ${moodBefore.name} → ${moodAfter.icon} ${moodAfter.name}`;
+  } else if (moodAfter) {
+    moodText = `${moodAfter.icon} ${moodAfter.name}`;
+  }
 
   const sheet = document.getElementById('share-sheet');
   sheet.innerHTML = `
@@ -191,7 +202,7 @@ function showShare(id) {
       <div class="share-brand">禅心 · 冥想日记</div>
       <div class="share-insight-text">${escapeHtml(insightText)}</div>
       <div class="share-meta">${type.name} · ${entry.duration}分钟 · ${dateStr}</div>
-      ${moodBefore && moodAfter ? `<div class="share-meta" style="margin-top: 4px;">${moodBefore.icon} ${moodBefore.name} → ${moodAfter.icon} ${moodAfter.name}</div>` : ''}
+      ${moodText ? `<div class="share-meta" style="margin-top: 4px;">${moodText}</div>` : ''}
     </div>
 
     <div class="share-actions">
@@ -232,8 +243,8 @@ function downloadShareImage(id) {
   if (!entry) return;
 
   const type = ALL_TYPES.find(t => t.id === entry.type) || ALL_TYPES[0];
-  const moodBefore = MOODS.find(m => m.id === entry.moodBefore);
-  const moodAfter = MOODS.find(m => m.id === entry.moodAfter);
+  const moodBefore = formatMoodDisplay(entry.moodBefore);
+  const moodAfter = formatMoodDisplay(entry.moodAfter);
 
   const canvas = document.getElementById('share-canvas');
   const ctx = canvas.getContext('2d');
@@ -289,6 +300,10 @@ function downloadShareImage(id) {
     ctx.fillStyle = '#a8a498';
     ctx.font = '15px serif';
     ctx.fillText(`${moodBefore.icon} ${moodBefore.name} → ${moodAfter.icon} ${moodAfter.name}`, 300, H - 100);
+  } else if (moodAfter) {
+    ctx.fillStyle = '#a8a498';
+    ctx.font = '15px serif';
+    ctx.fillText(`${moodAfter.icon} ${moodAfter.name}`, 300, H - 100);
   }
 
   ctx.strokeStyle = 'rgba(201,169,110,0.2)';

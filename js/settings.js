@@ -54,7 +54,34 @@ function updateCount() {
   }
 }
 
+// ===== Settings List Page (main settings) =====
+function initSettingsList() {
+  const subEl = document.getElementById('type-prefs-sub');
+  if (subEl) {
+    const ids = getEnabledTypeIds();
+    subEl.textContent = `${ids.length}/${ALL_TYPES.length} 已启用`;
+  }
+}
+
+// ===== About Modal =====
+function openAbout() {
+  const overlay = document.getElementById('about-overlay');
+  if (overlay) {
+    overlay.classList.add('active');
+  }
+}
+
+function closeAbout(e) {
+  // If called with event (click on overlay backdrop), only close if clicking the overlay itself
+  if (e && e.target && !e.target.classList.contains('about-overlay')) return;
+  const overlay = document.getElementById('about-overlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+  }
+}
+
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   renderTypeToggles();
+  initSettingsList();
 });

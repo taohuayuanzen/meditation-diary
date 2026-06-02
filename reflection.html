@@ -20,7 +20,10 @@
 
   <div class="setup-section">
     <div class="setup-label">此刻心情</div>
-    <div class="mood-grid" id="mood-after-grid"></div>
+    <div class="mood-trigger" id="mood-after-trigger" onclick="openReflectionMoodSheet()">
+      <span class="mood-trigger-icon" id="mood-trigger-icon">😌</span>
+      <span class="mood-trigger-text" id="mood-trigger-text">点击选择心情</span>
+    </div>
   </div>
 
   <div class="reflection-section">
@@ -31,6 +34,29 @@
   <div class="reflection-actions">
     <button class="save-btn" onclick="saveEntry()">保存记录</button>
     <button class="discard-btn" onclick="goBackToMeditate()">放弃记录</button>
+  </div>
+</div>
+
+<!-- Mood Sheet (Two-step) -->
+<div class="setup-sheet-overlay" id="mood-ref-sheet-overlay" onclick="closeReflectionMoodSheet()">
+  <div class="setup-sheet" onclick="event.stopPropagation()">
+    <div class="setup-sheet-handle"></div>
+
+    <div class="mood-sheet-header">
+      <button class="mood-sheet-back hidden" id="mood-ref-back-btn" onclick="moodRefSheetBack()">←</button>
+      <div class="mood-sheet-title-center" id="mood-ref-title">此刻心情</div>
+      <button class="mood-sheet-close" onclick="closeReflectionMoodSheet()">✕</button>
+    </div>
+
+    <div id="mood-ref-step1">
+      <div class="mood-cat-row" id="mood-ref-cat-row"></div>
+    </div>
+
+    <div class="mood-feelings-wrap" id="mood-ref-step2">
+      <div class="mood-feelings-label">选择你的感受（可多选）</div>
+      <div class="mood-feelings-grid" id="mood-ref-feelings-grid"></div>
+      <button class="mood-feelings-confirm" id="mood-ref-confirm-btn" onclick="confirmRefMoodSelection()" disabled>确认</button>
+    </div>
   </div>
 </div>
 

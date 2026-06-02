@@ -113,11 +113,11 @@ function selectTypeInSheet(id) {
 // ===== Duration Section =====
 function renderDurationSection() {
   const presets = [
-    { min: 10, label: '10', sub: '日常' },
-    { min: 20, label: '20', sub: '进阶' },
-    { min: 30, label: '30', sub: '深入' },
-    { min: 45, label: '45', sub: '精进' },
-    { min: 60, label: '60', sub: '禅定' },
+    { min: 10, label: '10', sub: '分钟' },
+    { min: 20, label: '20', sub: '分钟' },
+    { min: 30, label: '30', sub: '分钟' },
+    { min: 45, label: '45', sub: '分钟' },
+    { min: 60, label: '60', sub: '分钟' },
   ];
 
   const durPresets = document.getElementById('duration-presets');

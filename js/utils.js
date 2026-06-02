@@ -33,10 +33,67 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
+// ===== Mood Scatter Shared Utilities =====
+
+// Category-level color map
+const MOOD_CAT_COLORS = {
+  very_unpleasant: 'rgba(184,110,110,0.7)',
+  unpleasant: 'rgba(184,137,138,0.7)',
+  neutral: 'rgba(143,168,134,0.7)',
+  pleasant: 'rgba(201,169,110,0.7)',
+  very_pleasant: 'rgba(220,190,120,0.7)',
+};
+
+const MOOD_CAT_BORDERS = {
+  very_unpleasant: '#b86e6e',
+  unpleasant: 'var(--accent-rose)',
+  neutral: 'var(--accent-sage)',
+  pleasant: 'var(--accent-gold)',
+  very_pleasant: '#dcbe78',
+};
+
+// Helper: resolve moodAfter to a category id (handles both new object format and legacy string)
+function resolveMoodCategory(moodAfter) {
+  if (!moodAfter) return null;
+  if (typeof moodAfter === 'object' && moodAfter.category) {
+    return moodAfter.category;
+  }
+  // Legacy string format
+  if (typeof moodAfter === 'string') {
+    return MOOD_LEGACY_MAP[moodAfter] || null;
+  }
+  return null;
+}
+
+// Helper: format mood for display (handles both new object and legacy string)
+function formatMoodDisplay(mood) {
+  if (!mood) return null;
+  if (typeof mood === 'object' && mood.category) {
+    const cat = MOOD_CATEGORIES.find(c => c.id === mood.category);
+    if (!cat) return null;
+    return {
+      icon: cat.icon,
+      name: mood.feelings && mood.feelings.length > 0 ? mood.feelings.join('·') : cat.name,
+    };
+  }
+  // Legacy string format
+  if (typeof mood === 'string') {
+    const catId = MOOD_LEGACY_MAP[mood];
+    if (catId) {
+      const cat = MOOD_CATEGORIES.find(c => c.id === catId);
+      const oldMood = MOODS.find(m => m.id === mood);
+      return cat ? { icon: cat.icon, name: oldMood ? oldMood.name : cat.name } : null;
+    }
+    const oldMood = MOODS.find(m => m.id === mood);
+    return oldMood ? { icon: oldMood.icon, name: oldMood.name } : null;
+  }
+  return null;
+}
+
 function renderEntryCard(e) {
   const type = ALL_TYPES.find(t => t.id === e.type) || ALL_TYPES[0];
-  const moodBefore = MOODS.find(m => m.id === e.moodBefore);
-  const moodAfter = MOODS.find(m => m.id === e.moodAfter);
+  const moodBefore = formatMoodDisplay(e.moodBefore);
+  const moodAfter = formatMoodDisplay(e.moodAfter);
 
   const moodDisplay = [];
   if (moodBefore) moodDisplay.push(`<span>${moodBefore.icon} ${moodBefore.name}</span>`);

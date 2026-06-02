@@ -1,4 +1,7 @@
-// ===== Web Audio Engine =====
+// ===== Audio Engine =====
+// Supports Web Audio synthesis (fallback) and real audio files (when available)
+// Priority: real audio file > Web Audio synthesis > vibrate
+
 let audioCtx = null;
 
 function getAudioCtx() {
@@ -11,6 +14,99 @@ function getAudioCtx() {
   return audioCtx;
 }
 
+// ===== Vibration =====
+function playVibrate() {
+  if (navigator.vibrate) {
+    // Pattern: vibrate 200ms, pause 100ms, vibrate 200ms, pause 100ms, vibrate 400ms
+    navigator.vibrate([200, 100, 200, 100, 400]);
+  }
+}
+
+// ===== Sound Playback Router =====
+// Try real audio file first, fall back to Web Audio synthesis
+async function playEndSound(soundId) {
+  soundId = soundId || 'yinching';
+
+  // Vibrate mode: vibrate + short beep
+  if (soundId === 'vibrate') {
+    playVibrate();
+    // Also play a subtle tone so user hears something
+    playToneBeep();
+    return;
+  }
+
+  // Try real audio file first
+  const realAudioPlayed = await tryPlayRealAudio(soundId);
+  if (!realAudioPlayed) {
+    // Fall back to Web Audio synthesis
+    playSynthesizedSound(soundId);
+  }
+}
+
+// ===== Real Audio File Playback =====
+const AUDIO_FILES = {
+  muyu:          'audio/muyu.mp3',
+  yinching:      'audio/yinching.mp3',
+  dingxia:       'audio/dingxia.mp3',
+  singing_bowl:  'audio/singing_bowl.mp3',
+};
+
+async function tryPlayRealAudio(soundId) {
+  const filePath = AUDIO_FILES[soundId];
+  if (!filePath) return false;
+
+  try {
+    const response = await fetch(filePath, { method: 'HEAD' });
+    if (!response.ok) return false;
+
+    const audio = new Audio(filePath);
+    audio.volume = 0.8;
+
+    // Resume AudioContext (needed after user gesture requirement)
+    getAudioCtx();
+
+    await audio.play();
+    return true;
+  } catch (e) {
+    // File not found or playback failed, fall back to synthesis
+    return false;
+  }
+}
+
+// ===== Subtle Beep for Vibrate Mode =====
+function playToneBeep() {
+  try {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = 600;
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  } catch (e) {
+    // Silent fail for environments without audio
+  }
+}
+
+// ===== Web Audio Synthesis (Fallback) =====
+function playSynthesizedSound(soundId) {
+  switch (soundId) {
+    case 'muyu':          playSoundMuyu(); break;
+    case 'yinching':      playSoundYinching(); break;
+    case 'dingxia':       playSoundDingxia(); break;
+    case 'singing_bowl':  playSoundSingingBowl(); break;
+  }
+}
+
+// ===== 木鱼 (Mokugyo / Wooden Fish) =====
 function playSoundMuyu() {
   const ctx = getAudioCtx();
   const now = ctx.currentTime;
@@ -73,6 +169,7 @@ function playSoundMuyu() {
   }
 }
 
+// ===== 引磬 (Yinching / Small Bell) =====
 function playSoundYinching() {
   const ctx = getAudioCtx();
   const now = ctx.currentTime;
@@ -134,6 +231,7 @@ function playSoundYinching() {
   });
 }
 
+// ===== 颂钵 (Singing Bowl) =====
 function playSoundSingingBowl() {
   const ctx = getAudioCtx();
   const now = ctx.currentTime;
@@ -187,25 +285,13 @@ function playSoundSingingBowl() {
   });
 }
 
-function playEndSound(soundId) {
-  soundId = soundId || 'yinching';
-  switch (soundId) {
-    case 'muyu': playSoundMuyu(); break;
-    case 'yinching': playSoundYinching(); break;
-    case 'dingxia': playSoundDingxia(); break;
-    case 'singing_bowl': playSoundSingingBowl(); break;
-  }
-}
-
+// ===== 丁夏 (Keisu / Inkin) =====
 function playSoundDingxia() {
   const ctx = getAudioCtx();
   const now = ctx.currentTime;
 
-  // 丁夏 (Keisu / Inkin): small handheld brass bell with sharp clear ring
-  // Higher and brighter than yinching, shorter sustain, sharper attack
   const baseFreq = 1200;
 
-  // Two strikes: the characteristic "chin-kin" pattern
   const strikes = [
     { time: 0, freq: baseFreq, gain: 0.3 },
     { time: 0.6, freq: baseFreq * 1.5, gain: 0.25 },
@@ -214,7 +300,6 @@ function playSoundDingxia() {
   strikes.forEach(strike => {
     const t = now + strike.time;
 
-    // Sharp metallic attack
     const noiseLen = 0.02;
     const bufSize = ctx.sampleRate * noiseLen;
     const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
@@ -236,7 +321,6 @@ function playSoundDingxia() {
     noise.start(t);
     noise.stop(t + noiseLen);
 
-    // Bright harmonics - inharmonic metallic series
     const harmonics = [
       { freq: strike.freq, gain: strike.gain, decay: 2.0 },
       { freq: strike.freq * 2.0, gain: strike.gain * 0.5, decay: 1.2 },

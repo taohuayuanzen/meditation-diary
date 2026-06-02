@@ -144,16 +144,13 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== Home: Top Row (Greeting + Week Dots) ===== */
-.home-top-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
+/* ===== Home: Top Area (Greeting + Week Dots stacked) ===== */
+.home-top {
   padding: 48px 0 8px;
 }
 
-.home-greeting { flex: 1; }
+.home-greeting {
+}
 
 .home-greeting h1 {
   font-family: var(--font-display);
@@ -170,14 +167,13 @@ body {
   font-weight: 300;
 }
 
-/* ===== Week Section (compact, right side of greeting) ===== */
+/* ===== Week Section (below greeting, left-aligned) ===== */
 .week-dots {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 4px;
-  padding-top: 8px;
-  flex-shrink: 0;
+  margin-top: 12px;
 }
 
 .week-dot-row {
@@ -238,7 +234,7 @@ body {
 
 /* ===== Mood Scatter Section ===== */
 .mood-scatter-section {
-  margin-top: 4px;
+  margin-top: 24px;
 }
 
 .mood-scatter-container {
@@ -356,6 +352,65 @@ body {
   color: var(--text-muted);
   margin-top: 20px;
   font-weight: 300;
+}
+
+/* ===== Wisdom Quote Card ===== */
+.wisdom-section {
+  margin-top: 8px;
+  padding-bottom: 16px;
+}
+
+.wisdom-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px 20px;
+  overflow: hidden;
+}
+
+.wisdom-deco {
+  position: absolute;
+  top: -4px;
+  left: 16px;
+  font-size: 3.2rem;
+  color: var(--accent-gold);
+  opacity: 0.2;
+  font-family: var(--font-display);
+  line-height: 1;
+  user-select: none;
+}
+
+.wisdom-text {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.wisdom-author {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.wisdom-author-name {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--accent-gold);
+  letter-spacing: 0.05em;
+}
+
+.wisdom-author-title {
+  font-size: 0.7rem;
+  font-weight: 300;
+  color: var(--text-muted);
 }
 
 /* ===== Section Header ===== */
@@ -486,6 +541,213 @@ body {
 
 .mood-icon { font-size: 1.4rem; margin-bottom: 6px; display: block; }
 .mood-name { font-size: 0.72rem; color: var(--text-secondary); font-weight: 400; }
+
+/* ===== Two-step Mood Sheet ===== */
+.mood-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.mood-sheet-back {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.mood-sheet-back:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+.mood-sheet-back.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mood-sheet-title-center {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.mood-sheet-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+.mood-sheet-close:hover {
+  color: var(--accent-gold);
+}
+
+/* Step 1: Category Row */
+.mood-cat-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.mood-cat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 4px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+.mood-cat-item:hover {
+  border-color: var(--border-light);
+  transform: translateY(-1px);
+}
+.mood-cat-item.selected {
+  border-color: var(--accent-gold);
+  background: var(--accent-gold-soft);
+}
+
+.mood-cat-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.mood-cat-name {
+  font-size: 0.6rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.mood-cat-item.selected .mood-cat-name {
+  color: var(--accent-gold);
+}
+
+/* Step 2: Feeling Tags */
+.mood-feelings-wrap {
+  display: none;
+}
+.mood-feelings-wrap.active {
+  display: block;
+  animation: fadeIn 0.25s ease;
+}
+
+.mood-feelings-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.mood-feelings-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.mood-feeling-chip {
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.mood-feeling-chip:hover {
+  border-color: var(--border-light);
+}
+.mood-feeling-chip.selected {
+  border-color: var(--accent-gold);
+  background: var(--accent-gold-soft);
+  color: var(--accent-gold);
+}
+
+.mood-feelings-confirm {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--accent-gold);
+  color: var(--bg-deep);
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+.mood-feelings-confirm:hover {
+  background: #d4b578;
+}
+.mood-feelings-confirm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Reflection page: mood trigger area */
+.mood-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 56px;
+}
+.mood-trigger:hover {
+  border-color: var(--border-light);
+}
+.mood-trigger.has-mood {
+  border-color: var(--accent-gold);
+  background: var(--accent-gold-soft);
+}
+
+.mood-trigger-icon {
+  font-size: 1.3rem;
+}
+.mood-trigger-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+.mood-trigger.has-mood .mood-trigger-text {
+  color: var(--accent-gold);
+}
 
 .type-scroll {
   display: flex;
@@ -823,8 +1085,18 @@ body {
 
 .custom-dur-confirm:hover { background: #d4b578; }
 
+/* ===== Begin Button (Fixed) ===== */
+.begin-btn-spacer {
+  height: 72px; /* reserve space for fixed button */
+}
+
 .begin-btn {
-  width: 100%;
+  position: fixed;
+  bottom: 68px; /* above tab-bar */
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 432px; /* match 480px container - 48px padding */
   padding: 16px;
   border: 1px solid var(--accent-gold);
   border-radius: var(--radius-lg);
@@ -836,7 +1108,9 @@ body {
   cursor: pointer;
   letter-spacing: 0.15em;
   transition: all 0.3s ease;
-  margin-top: 16px;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .begin-btn:hover { background: rgba(201,169,110,0.25); }
@@ -928,7 +1202,6 @@ body {
 
 .timer-controls {
   display: flex;
-  gap: 24px;
   align-items: center;
   justify-content: center;
 }
@@ -958,6 +1231,107 @@ body {
   background: var(--accent-gold-soft);
   color: var(--accent-gold);
   font-size: 1.2rem;
+}
+
+/* ===== Timer Finish Button (appears on pause, fixed at bottom) ===== */
+.timer-finish-btn {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 432px;
+  padding: 16px;
+  border: 1px solid var(--accent-gold);
+  border-radius: var(--radius-lg);
+  background: var(--accent-gold-soft);
+  color: var(--accent-gold);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  letter-spacing: 0.15em;
+  transition: all 0.3s ease;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.timer-finish-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.timer-finish-btn:hover {
+  background: rgba(201,169,110,0.25);
+}
+
+/* Cancel button — top-left corner, hidden after 1 min */
+.timer-cancel-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 110;
+  transition: all 0.3s ease;
+}
+
+.timer-cancel-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.timer-cancel-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===== Timer Mood Button (top-right, hidden after 1 min) ===== */
+.timer-mood-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: var(--bg-card);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 110;
+  transition: all 0.3s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.timer-mood-btn:hover {
+  border-color: var(--accent-gold);
+  transform: scale(1.1);
+}
+
+.timer-mood-btn.selected {
+  border-color: var(--accent-gold);
+  background: var(--accent-gold-soft);
+}
+
+.timer-mood-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ===== Reflection ===== */
@@ -1511,6 +1885,172 @@ body {
 .type-toggle-switch.active::after {
   left: 18px;
   background: var(--bg-deep);
+}
+
+/* ===== Settings List (main settings page) ===== */
+.settings-list {
+  margin-top: 16px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.settings-row:hover {
+  border-color: var(--border-light);
+  transform: translateY(-1px);
+}
+
+.settings-row-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.settings-row-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+}
+
+.settings-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.settings-row-title {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.settings-row-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+.settings-row-arrow {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.settings-row:hover .settings-row-arrow {
+  color: var(--accent-gold);
+}
+
+/* ===== About Modal ===== */
+.about-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 250;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.about-overlay.active {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+.about-sheet {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 8px 32px 40px;
+  text-align: center;
+  animation: slideUp 0.35s ease;
+}
+
+.about-sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--text-muted);
+  border-radius: 2px;
+  margin: 8px auto 24px;
+}
+
+.about-logo {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--accent-gold);
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+}
+
+.about-name {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+
+.about-version {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+.about-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.about-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--border-light);
+  margin: 0 auto 16px;
+}
+
+.about-footer {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+
+.about-close-btn {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.about-close-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
 }
 
 /* Nav back button */

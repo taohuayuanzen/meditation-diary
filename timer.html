@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>冥想中 · 禅心</title>
+<title>计时</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -13,6 +13,8 @@
 <div class="atmosphere immersive-atmosphere"></div>
 
 <div class="immersive-container">
+  <button class="timer-cancel-btn" id="cancel-btn" onclick="cancelMeditation()" title="取消">✕</button>
+  <button class="timer-mood-btn" id="mood-btn" onclick="openMoodSheet()" title="记录心情">😌</button>
   <div class="timer-screen">
     <div class="timer-type-label" id="timer-type-label">冥想</div>
 
@@ -30,10 +32,10 @@
     </div>
 
     <div class="timer-controls">
-      <button class="timer-ctrl-btn" onclick="cancelMeditation()" title="取消">✕</button>
       <button class="timer-ctrl-btn primary" id="pause-btn" onclick="togglePause()" title="暂停">❚❚</button>
-      <button class="timer-ctrl-btn" onclick="finishMeditation()" title="完成">✓</button>
     </div>
+
+    <button class="timer-finish-btn" id="finish-btn" onclick="finishMeditation()">完成</button>
   </div>
 </div>
 
@@ -45,6 +47,32 @@
     <div class="confirm-actions">
       <button class="confirm-cancel" onclick="closeConfirm()">继续冥想</button>
       <button class="confirm-ok" onclick="confirmCancel()">确认取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mood Sheet (Two-step) -->
+<div class="setup-sheet-overlay" id="mood-sheet-overlay" onclick="closeMoodSheet()">
+  <div class="setup-sheet" onclick="event.stopPropagation()">
+    <div class="setup-sheet-handle"></div>
+
+    <!-- Sheet Header -->
+    <div class="mood-sheet-header">
+      <button class="mood-sheet-back hidden" id="mood-back-btn" onclick="moodSheetBack()">←</button>
+      <div class="mood-sheet-title-center" id="mood-sheet-title">记录此刻心情</div>
+      <button class="mood-sheet-close" onclick="closeMoodSheet()">✕</button>
+    </div>
+
+    <!-- Step 1: Category Selection -->
+    <div id="mood-step1">
+      <div class="mood-cat-row" id="mood-cat-row"></div>
+    </div>
+
+    <!-- Step 2: Feeling Selection -->
+    <div class="mood-feelings-wrap" id="mood-step2">
+      <div class="mood-feelings-label" id="mood-feelings-label">选择你的感受</div>
+      <div class="mood-feelings-grid" id="mood-feelings-grid"></div>
+      <button class="mood-feelings-confirm" id="mood-confirm-btn" onclick="confirmMoodSelection()" disabled>确认</button>
     </div>
   </div>
 </div>

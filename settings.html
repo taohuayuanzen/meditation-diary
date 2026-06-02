@@ -20,19 +20,64 @@
   </div>
 
   <div class="page-content">
-    <div class="settings-header">
-      <h1>偏好设置</h1>
-      <p>定制你的修行方式</p>
-    </div>
-
-    <div class="settings-section">
-      <div class="settings-section-header">
-        <h2>冥想类型</h2>
-        <span class="settings-count" id="type-count">7/20</span>
+    <div class="settings-list">
+      <!-- 每日提醒 -->
+      <div class="settings-row" onclick="showToast('即将上线，敬请期待')">
+        <div class="settings-row-left">
+          <span class="settings-row-icon">🔔</span>
+          <div class="settings-row-info">
+            <span class="settings-row-title">每日提醒</span>
+            <span class="settings-row-sub">设置冥想提醒时间</span>
+          </div>
+        </div>
+        <span class="settings-row-arrow">›</span>
       </div>
-      <p class="settings-hint">选择展示在冥想设置页的类型，至少选择 4 项</p>
-      <div class="type-toggle-grid" id="type-toggle-grid"></div>
+
+      <!-- 冥想类型偏好 -->
+      <a class="settings-row" href="type-prefs.html">
+        <div class="settings-row-left">
+          <span class="settings-row-icon">🧘</span>
+          <div class="settings-row-info">
+            <span class="settings-row-title">冥想类型偏好</span>
+            <span class="settings-row-sub" id="type-prefs-sub">7/20 已启用</span>
+          </div>
+        </div>
+        <span class="settings-row-arrow">›</span>
+      </a>
+
+      <!-- 关于我们 -->
+      <div class="settings-row" onclick="openAbout()">
+        <div class="settings-row-left">
+          <span class="settings-row-icon">🙏</span>
+          <div class="settings-row-info">
+            <span class="settings-row-title">关于我们</span>
+            <span class="settings-row-sub">版本信息与产品介绍</span>
+          </div>
+        </div>
+        <span class="settings-row-arrow">›</span>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- 关于我们弹窗 -->
+<div class="about-overlay" id="about-overlay" onclick="closeAbout(event)">
+  <div class="about-sheet" onclick="event.stopPropagation()">
+    <div class="about-sheet-handle"></div>
+    <div class="about-logo">禅心</div>
+    <div class="about-name">禅心 · 冥想日记</div>
+    <div class="about-version">v1.0.0</div>
+    <div class="about-desc">
+      以佛教禅修传统为根基，融合现代极简设计美学，<br>
+      帮助修行者建立持续、有觉知的冥想习惯。<br><br>
+      纯前端应用，数据完全本地存储，<br>
+      无需注册，无需联网，无任何数据上传。
+    </div>
+    <div class="about-divider"></div>
+    <div class="about-footer">
+      <span>诸行无常，是生灭法</span>
+    </div>
+    <button class="about-close-btn" onclick="closeAbout()">关闭</button>
   </div>
 </div>
 
