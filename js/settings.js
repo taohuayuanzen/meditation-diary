@@ -80,6 +80,85 @@ function closeAbout(e) {
   }
 }
 
+// ===== Contact Modal =====
+function openContact() {
+  const overlay = document.getElementById('contact-overlay');
+  if (overlay) overlay.classList.add('active');
+}
+
+function closeContact(e) {
+  if (e && e.target && !e.target.classList.contains('about-overlay')) return;
+  const overlay = document.getElementById('contact-overlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function copyEmail() {
+  const email = document.getElementById('contact-email')?.textContent || 'zen@chanxin.app';
+  copyText(email, '邮箱已复制');
+}
+
+function copyWechat() {
+  const wechat = document.getElementById('contact-wechat')?.textContent || 'ChanXin_App';
+  copyText(wechat, '微信号已复制');
+}
+
+// ===== Share Friend Modal =====
+function openShare() {
+  const overlay = document.getElementById('share-friend-overlay');
+  if (overlay) overlay.classList.add('active');
+  const tip = document.getElementById('share-friend-tip');
+  if (tip) tip.textContent = '';
+}
+
+function closeShareFriend(e) {
+  if (e && e.target && !e.target.classList.contains('about-overlay')) return;
+  const overlay = document.getElementById('share-friend-overlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function copyShareLink() {
+  const url = window.location.origin + window.location.pathname.replace('settings.html', 'index.html');
+  const text = '推荐你一个冥想日记应用「禅心」—— 纯前端、无广告、数据本地存储 🧘‍♂️ ' + url;
+  copyText(text, '链接已复制，快去分享吧');
+}
+
+function shareToWechat() {
+  const tip = document.getElementById('share-friend-tip');
+  if (tip) {
+    tip.textContent = '请复制链接后，打开微信分享给好友或朋友圈';
+  }
+  copyShareLink();
+}
+
+// ===== Utility =====
+function copyText(text, successMsg) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(successMsg);
+    }).catch(() => {
+      fallbackCopy(text, successMsg);
+    });
+  } else {
+    fallbackCopy(text, successMsg);
+  }
+}
+
+function fallbackCopy(text, successMsg) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast(successMsg);
+  } catch {
+    showToast('复制失败，请手动复制');
+  }
+  document.body.removeChild(ta);
+}
+
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   renderTypeToggles();

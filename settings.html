@@ -46,6 +46,18 @@
         <span class="settings-row-arrow">›</span>
       </a>
 
+      <!-- 联系开发者 -->
+      <div class="settings-row" onclick="openContact()">
+        <div class="settings-row-left">
+          <span class="settings-row-icon">✉️</span>
+          <div class="settings-row-info">
+            <span class="settings-row-title">联系开发者</span>
+            <span class="settings-row-sub">反馈建议或联系我们</span>
+          </div>
+        </div>
+        <span class="settings-row-arrow">›</span>
+      </div>
+
       <!-- 关于我们 -->
       <div class="settings-row" onclick="openAbout()">
         <div class="settings-row-left">
@@ -57,7 +69,77 @@
         </div>
         <span class="settings-row-arrow">›</span>
       </div>
+
+      <!-- 分享给好友 -->
+      <div class="settings-row" onclick="openShare()">
+        <div class="settings-row-left">
+          <span class="settings-row-icon">🔗</span>
+          <div class="settings-row-info">
+            <span class="settings-row-title">分享给好友</span>
+            <span class="settings-row-sub">邀请朋友一起冥想</span>
+          </div>
+        </div>
+        <span class="settings-row-arrow">›</span>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- 联系开发者弹窗 -->
+<div class="about-overlay" id="contact-overlay" onclick="closeContact(event)">
+  <div class="about-sheet" onclick="event.stopPropagation()">
+    <div class="about-sheet-handle"></div>
+    <div class="contact-icon">✉️</div>
+    <div class="about-name">联系开发者</div>
+    <div class="about-desc">
+      感谢您使用禅心 · 冥想日记<br><br>
+      如果您有任何建议、反馈或想法，<br>
+      欢迎通过以下方式联系我们：
+    </div>
+    <div class="contact-methods">
+      <div class="contact-method" onclick="copyEmail()">
+        <span class="contact-method-icon">📧</span>
+        <div class="contact-method-info">
+          <span class="contact-method-label">邮箱</span>
+          <span class="contact-method-value" id="contact-email">zen@chanxin.app</span>
+        </div>
+        <span class="contact-method-action">复制</span>
+      </div>
+      <div class="contact-method" onclick="copyWechat()">
+        <span class="contact-method-icon">💬</span>
+        <div class="contact-method-info">
+          <span class="contact-method-label">微信</span>
+          <span class="contact-method-value" id="contact-wechat">ChanXin_App</span>
+        </div>
+        <span class="contact-method-action">复制</span>
+      </div>
+    </div>
+    <button class="about-close-btn" onclick="closeContact()">关闭</button>
+  </div>
+</div>
+
+<!-- 分享给好友弹窗 -->
+<div class="about-overlay" id="share-friend-overlay" onclick="closeShareFriend(event)">
+  <div class="about-sheet" onclick="event.stopPropagation()">
+    <div class="about-sheet-handle"></div>
+    <div class="share-friend-icon">🔗</div>
+    <div class="about-name">分享给好友</div>
+    <div class="about-desc">
+      邀请朋友一起开始冥想之旅，<br>
+      让正念成为生活的一部分。
+    </div>
+    <div class="share-friend-actions">
+      <button class="share-friend-btn primary" onclick="copyShareLink()">
+        <span class="share-friend-btn-icon">📋</span>
+        复制链接
+      </button>
+      <button class="share-friend-btn wechat" onclick="shareToWechat()">
+        <span class="share-friend-btn-icon">💚</span>
+        微信分享
+      </button>
+    </div>
+    <div class="share-friend-tip" id="share-friend-tip"></div>
+    <button class="about-close-btn" onclick="closeShareFriend()">关闭</button>
   </div>
 </div>
 
