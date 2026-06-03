@@ -199,7 +199,7 @@ function showShare(id) {
     </div>
 
     <div class="share-card-preview">
-      <div class="share-brand">禅心 · 冥想日记</div>
+      <div class="share-brand">联结 · 冥想日记</div>
       <div class="share-insight-text">${escapeHtml(insightText)}</div>
       <div class="share-meta">${type.name} · ${entry.duration}分钟 · ${dateStr}</div>
       ${moodText ? `<div class="share-meta" style="margin-top: 4px;">${moodText}</div>` : ''}
@@ -223,7 +223,7 @@ function closeShare() {
 }
 
 function copyInsight(text) {
-  const shareText = `${text}\n\n—— 禅心 · 冥想日记`;
+  const shareText = `${text}\n\n—— 联结 · 冥想日记`;
   navigator.clipboard.writeText(shareText).then(() => {
     showToast('已复制到剪贴板');
   }).catch(() => {
@@ -267,7 +267,7 @@ function downloadShareImage(id) {
   ctx.fillStyle = '#c9a96e';
   ctx.font = '18px serif';
   ctx.textAlign = 'center';
-  ctx.fillText('禅心 · 冥想日记', 300, 80);
+  ctx.fillText('联结 · 冥想日记', 300, 80);
 
   ctx.strokeStyle = 'rgba(201,169,110,0.3)';
   ctx.lineWidth = 0.5;
@@ -313,7 +313,7 @@ function downloadShareImage(id) {
   ctx.stroke();
 
   const link = document.createElement('a');
-  link.download = `禅心冥想_${formatDate(entry.date).replace(/\s/g, '_')}.png`;
+  link.download = `联结冥想_${formatDate(entry.date).replace(/\s/g, '_')}.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
 

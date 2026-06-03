@@ -118,7 +118,7 @@ function closeShareFriend(e) {
 
 function copyShareLink() {
   const url = window.location.origin + window.location.pathname.replace('settings.html', 'index.html');
-  const text = '推荐你一个冥想日记应用「禅心」—— 纯前端、无广告、数据本地存储 🧘‍♂️ ' + url;
+  const text = '推荐你一个冥想日记应用「联结」—— 纯前端、无广告、数据本地存储 🧘‍♂️ ' + url;
   copyText(text, '链接已复制，快去分享吧');
 }
 
