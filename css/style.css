@@ -777,7 +777,7 @@ body {
   background: var(--accent-sage-soft);
 }
 
-.type-icon { font-size: 1.3rem; margin-bottom: 6px; display: block; }
+/* .type-icon → css/icons.css */
 .type-name { font-size: 0.72rem; color: var(--text-secondary); font-weight: 400; }
 
 .duration-presets { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
@@ -833,7 +833,7 @@ body {
   background: var(--accent-gold-soft);
 }
 
-.sound-option .sound-icon { font-size: 1.4rem; display: block; margin-bottom: 6px; }
+/* .sound-icon → css/icons.css */
 .sound-option .sound-name { font-size: 0.72rem; color: var(--text-secondary); font-weight: 400; }
 
 .sound-option .sound-play {
@@ -997,7 +997,7 @@ body {
   background: var(--accent-sage-soft);
 }
 
-.type-picker-icon { font-size: 1.1rem; flex-shrink: 0; }
+/* .type-picker-icon → css/icons.css */
 
 .type-picker-name {
   font-size: 0.82rem;
@@ -1143,17 +1143,7 @@ body {
   flex-shrink: 0;
 }
 
-.timer-ring-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-
-.timer-ring-bg { fill: none; stroke: var(--bg-elevated); stroke-width: 3; }
-
-.timer-ring-progress {
-  fill: none;
-  stroke: var(--accent-gold);
-  stroke-width: 3;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1s linear;
-}
+/* .timer-ring-svg / .timer-ring-bg / .timer-ring-progress → css/icons.css */
 
 .timer-display {
   position: absolute;
@@ -1700,7 +1690,7 @@ body {
 
 .tab-item.active { color: var(--accent-gold); }
 
-.tab-icon { font-size: 1.2rem; margin-bottom: 4px; }
+/* .tab-icon → css/icons.css */
 .tab-label { font-size: 0.6rem; letter-spacing: 0.05em; }
 
 /* ===== Confirm Modal ===== */
@@ -1841,10 +1831,7 @@ body {
   background: var(--accent-gold-soft);
 }
 
-.type-toggle-icon {
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
+/* .type-toggle-icon → css/icons.css */
 
 .type-toggle-name {
   flex: 1;

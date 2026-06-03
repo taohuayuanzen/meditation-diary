@@ -25,14 +25,25 @@ function deleteEntry(id) {
 
 // ===== Settings =====
 const DEFAULT_SETTINGS = {
-  enabledTypes: ['breath','loving','buddha','body','death','vipassana','walking'],
+  enabledTypes: ['sitting_zen','walking_zen','life_zen','standing_stake','yoga','pranayama','chanting','baduanjin','yijinjing','taichi'],
+  lastSetup: null,  // { type, duration, isCustomDuration, sound } — 上次冥想设置
 };
 
 function loadSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || 'null');
     if (!saved) return { ...DEFAULT_SETTINGS };
-    return { ...DEFAULT_SETTINGS, ...saved };
+    const merged = { ...DEFAULT_SETTINGS, ...saved };
+    // Migrate: if saved enabledTypes contains stale ids not in ALL_TYPES, reset to default
+    if (merged.enabledTypes && ALL_TYPES) {
+      const validIds = new Set(ALL_TYPES.map(t => t.id));
+      const hasStale = merged.enabledTypes.some(id => !validIds.has(id));
+      if (hasStale) {
+        merged.enabledTypes = DEFAULT_SETTINGS.enabledTypes;
+        saveSettings(merged); // persist the fix
+      }
+    }
+    return merged;
   } catch {
     return { ...DEFAULT_SETTINGS };
   }
@@ -50,6 +61,18 @@ function getEnabledTypeIds() {
 function setEnabledTypeIds(ids) {
   const settings = loadSettings();
   settings.enabledTypes = ids;
+  saveSettings(settings);
+}
+
+// ===== Last Setup (remember user's last meditation choices) =====
+function getLastSetup() {
+  const settings = loadSettings();
+  return settings.lastSetup || null;
+}
+
+function saveLastSetup(setup) {
+  const settings = loadSettings();
+  settings.lastSetup = setup;
   saveSettings(settings);
 }
 

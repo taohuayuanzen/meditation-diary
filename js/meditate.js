@@ -7,8 +7,31 @@ let medState = {
   selectedDuration: null,   // null or number (minutes)
   isCustomDuration: false,  // true when user picked custom
   customDurValue: 20,       // current slider value
-  selectedSound: 'yinching',
+  selectedSound: null,
 };
+
+// ===== Init state from last setup or defaults =====
+function initMedState() {
+  const last = getLastSetup();
+  const activeTypes = getActiveTypes();
+  const firstTypeId = activeTypes.length > 0 ? activeTypes[0].id : null;
+
+  if (last) {
+    // 练习过的用户：恢复上次选择
+    // 校验 type 是否仍在启用列表中
+    const typeValid = last.type && activeTypes.find(t => t.id === last.type);
+    medState.selectedType = typeValid ? last.type : firstTypeId;
+    medState.selectedDuration = last.duration || 10;
+    medState.isCustomDuration = last.isCustomDuration || false;
+    medState.selectedSound = last.sound || SOUNDS[0].id;
+  } else {
+    // 新用户：选中第1项
+    medState.selectedType = firstTypeId;
+    medState.selectedDuration = 10;
+    medState.isCustomDuration = false;
+    medState.selectedSound = SOUNDS[0].id;
+  }
+}
 
 // ===== Setup Screen =====
 function getActiveTypes() {
@@ -213,6 +236,14 @@ function checkBeginReady() {
 function beginMeditation() {
   if (!medState.selectedType || !medState.selectedDuration) return;
 
+  // 记住用户选择，下次打开自动恢复
+  saveLastSetup({
+    type: medState.selectedType,
+    duration: medState.selectedDuration,
+    isCustomDuration: medState.isCustomDuration,
+    sound: medState.selectedSound,
+  });
+
   saveSession({
     type: medState.selectedType,
     duration: medState.selectedDuration,
@@ -227,5 +258,6 @@ function beginMeditation() {
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
+  initMedState();
   renderSetup();
 });

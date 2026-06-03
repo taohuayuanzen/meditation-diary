@@ -184,7 +184,7 @@ function saveEntry() {
 
   addEntry(entry);
   clearSession();
-  window.location.href = 'index.html';
+  window.location.href = 'journal.html';
 }
 
 function goBackToMeditate() {

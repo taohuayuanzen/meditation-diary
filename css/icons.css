@@ -1,0 +1,60 @@
+/* ===== SVG Icon Styles ===== */
+/* 集中管理所有项目内联 SVG 图标的尺寸与样式，便于统一维护迭代 */
+
+/* ---------- Tab Bar 底部导航图标 ---------- */
+.tab-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 4px;
+}
+
+/* ---------- 冥想类型图标（设置页-类型选择区） ---------- */
+.type-icon {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+/* ---------- 冥想类型图标（类型偏好开关列表） ---------- */
+.type-toggle-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* ---------- 冥想类型图标（类型选择器弹窗） ---------- */
+.type-picker-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ---------- 结束提示音图标 ---------- */
+.sound-option .sound-icon {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+/* ---------- 计时器环形 SVG ---------- */
+.timer-ring-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-ring-bg {
+  fill: none;
+  stroke: var(--bg-elevated);
+  stroke-width: 3;
+}
+
+.timer-ring-progress {
+  fill: none;
+  stroke: var(--accent-gold);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
