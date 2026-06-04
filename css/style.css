@@ -2865,3 +2865,20 @@ body {
   font-weight: 300;
 }
 
+/* ===== Total row in type stats ===== */
+.stats-type-total {
+  padding-bottom: 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.stats-type-total .stats-type-name {
+  color: var(--accent-gold);
+  font-weight: 500;
+}
+.stats-type-total .stats-type-duration,
+.stats-type-total .stats-type-count {
+  color: var(--accent-gold);
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+

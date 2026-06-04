@@ -20,7 +20,9 @@ function renderAll() {
   renderWeekDots();
   renderSummary();
   renderPersonalBest();
-  renderTypeBreakdown();
+  renderDurationBreakdown();
+  renderCountBreakdown();
+  renderAvgBreakdown();
 }
 
 // ===== Time Period Filtering =====
@@ -142,7 +144,7 @@ function formatDuration(minutes) {
   if (minutes >= 60) {
     const h = Math.floor(minutes / 60);
     const m = minutes % 60;
-    return m > 0 ? `${h}小时${m}分` : `${h}小时`;
+    return m > 0 ? `${h}小时${m}分钟` : `${h}小时`;
   }
   return `${minutes}分钟`;
 }
@@ -259,7 +261,7 @@ function renderPersonalBest() {
   const container = document.getElementById('stats-personal-best');
   if (!container) return;
 
-  if (currentPeriod !== 'all') {
+  if (currentPeriod === 'week') {
     container.innerHTML = '';
     container.style.display = 'none';
     return;
@@ -268,7 +270,8 @@ function renderPersonalBest() {
   container.style.display = '';
 
   const entries = loadEntries();
-  const best = calcPersonalBest(entries);
+  const filtered = filterEntriesByPeriod(entries, currentPeriod);
+  const best = calcPersonalBest(filtered);
 
   if (best.maxStreak === 0 && best.maxDuration === 0) {
     container.innerHTML = '';
@@ -283,10 +286,10 @@ function renderPersonalBest() {
     </div>`;
 }
 
-// ===== Render: Type Breakdown =====
+// ===== Render: Duration Breakdown =====
 
-function renderTypeBreakdown() {
-  const container = document.getElementById('stats-type-list');
+function renderDurationBreakdown() {
+  const container = document.getElementById('stats-duration-list');
   if (!container) return;
 
   const entries = loadEntries();
@@ -298,18 +301,34 @@ function renderTypeBreakdown() {
     return;
   }
 
-  // Build list in ALL_TYPES order, only those with records
+  // Build items with records
   const items = [];
-  let maxMinutes = 0;
+  let totalMinutes = 0;
   ALL_TYPES.forEach(t => {
     const stat = typeStats[t.id];
     if (stat) {
       items.push({ type: t, count: stat.count, minutes: stat.minutes });
-      if (stat.minutes > maxMinutes) maxMinutes = stat.minutes;
+      totalMinutes += stat.minutes;
     }
   });
 
-  container.innerHTML = items.map(item => {
+  // Sort by minutes descending
+  items.sort((a, b) => b.minutes - a.minutes);
+  const maxMinutes = items.length > 0 ? items[0].minutes : 0;
+
+  // Total row
+  let html = `<div class="stats-type-item stats-type-total">
+    <div class="stats-type-info">
+      <span class="stats-type-name">总计</span>
+    </div>
+    <div class="stats-type-bar-wrap"></div>
+    <div class="stats-type-nums">
+      <span class="stats-type-duration">${formatDuration(totalMinutes)}</span>
+    </div>
+  </div>`;
+
+  // Type rows
+  html += items.map(item => {
     const barWidth = maxMinutes > 0 ? Math.round(item.minutes / maxMinutes * 100) : 0;
     return `<div class="stats-type-item">
       <div class="stats-type-info">
@@ -320,9 +339,135 @@ function renderTypeBreakdown() {
         <div class="stats-type-bar" style="width:${barWidth}%"></div>
       </div>
       <div class="stats-type-nums">
-        <span class="stats-type-count">${item.count}次</span>
         <span class="stats-type-duration">${formatDuration(item.minutes)}</span>
       </div>
     </div>`;
   }).join('');
+
+  container.innerHTML = html;
+}
+
+// ===== Render: Count Breakdown =====
+
+function renderCountBreakdown() {
+  const container = document.getElementById('stats-count-list');
+  if (!container) return;
+
+  const entries = loadEntries();
+  const filtered = filterEntriesByPeriod(entries, currentPeriod);
+  const typeStats = calcTypeStats(filtered);
+
+  if (Object.keys(typeStats).length === 0) {
+    container.innerHTML = '<div class="stats-type-empty">暂无冥想记录</div>';
+    return;
+  }
+
+  // Build items with records
+  const items = [];
+  let totalCount = 0;
+  ALL_TYPES.forEach(t => {
+    const stat = typeStats[t.id];
+    if (stat) {
+      items.push({ type: t, count: stat.count, minutes: stat.minutes });
+      totalCount += stat.count;
+    }
+  });
+
+  // Sort by count descending
+  items.sort((a, b) => b.count - a.count);
+  const maxCount = items.length > 0 ? items[0].count : 0;
+
+  // Total row
+  let html = `<div class="stats-type-item stats-type-total">
+    <div class="stats-type-info">
+      <span class="stats-type-name">总计</span>
+    </div>
+    <div class="stats-type-bar-wrap"></div>
+    <div class="stats-type-nums">
+      <span class="stats-type-count">${totalCount}</span>
+    </div>
+  </div>`;
+
+  // Type rows
+  html += items.map(item => {
+    const barWidth = maxCount > 0 ? Math.round(item.count / maxCount * 100) : 0;
+    return `<div class="stats-type-item">
+      <div class="stats-type-info">
+        <span class="stats-type-icon">${item.type.icon}</span>
+        <span class="stats-type-name">${item.type.name}</span>
+      </div>
+      <div class="stats-type-bar-wrap">
+        <div class="stats-type-bar" style="width:${barWidth}%"></div>
+      </div>
+      <div class="stats-type-nums">
+        <span class="stats-type-count">${item.count}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = html;
+}
+
+// ===== Render: Avg Duration Per Session Breakdown =====
+
+function renderAvgBreakdown() {
+  const container = document.getElementById('stats-avg-list');
+  if (!container) return;
+
+  const entries = loadEntries();
+  const filtered = filterEntriesByPeriod(entries, currentPeriod);
+  const typeStats = calcTypeStats(filtered);
+
+  if (Object.keys(typeStats).length === 0) {
+    container.innerHTML = '<div class="stats-type-empty">暂无冥想记录</div>';
+    return;
+  }
+
+  // Build items with avg duration
+  const items = [];
+  let totalCount = 0, totalMinutes = 0;
+  ALL_TYPES.forEach(t => {
+    const stat = typeStats[t.id];
+    if (stat) {
+      const avg = stat.count > 0 ? stat.minutes / stat.count : 0;
+      items.push({ type: t, count: stat.count, minutes: stat.minutes, avg });
+      totalCount += stat.count;
+      totalMinutes += stat.minutes;
+    }
+  });
+
+  // Sort by avg descending
+  items.sort((a, b) => b.avg - a.avg);
+  const maxAvg = items.length > 0 ? items[0].avg : 0;
+  const totalAvg = totalCount > 0 ? totalMinutes / totalCount : 0;
+
+  // Total row
+  let html = `<div class="stats-type-item stats-type-total">
+    <div class="stats-type-info">
+      <span class="stats-type-name">总计</span>
+    </div>
+    <div class="stats-type-bar-wrap"></div>
+    <div class="stats-type-nums">
+      <span class="stats-type-duration">${formatDuration(Math.round(totalAvg))}</span>
+    </div>
+  </div>`;
+
+  // Type rows
+  html += items.map(item => {
+    const barWidth = maxAvg > 0 ? Math.round(item.avg / maxAvg * 100) : 0;
+    return `<div class="stats-type-item">
+      <div class="stats-type-info">
+        <span class="stats-type-icon">${item.type.icon}</span>
+        <span class="stats-type-name">${item.type.name}</span>
+      </div>
+      <div class="stats-type-bar-wrap">
+        <div class="stats-type-bar" style="width:${barWidth}%"></div>
+      </div>
+      <div class="stats-type-nums">
+        <span class="stats-type-duration">${formatDuration(Math.round(item.avg))}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = html;
 }
