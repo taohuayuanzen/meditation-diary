@@ -2260,6 +2260,11 @@ body {
 
 .profile-stats {
   margin: 16px 0 24px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.profile-stats:active {
+  opacity: 0.85;
 }
 
 .profile-stat-highlight {
@@ -2641,3 +2646,222 @@ body {
   border-color: var(--accent-rose);
   color: var(--accent-rose);
 }
+
+/* ===== Stats Page ===== */
+
+/* Period Tabs */
+.stats-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--bg-card);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 20px;
+}
+.stats-tab {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  font-family: inherit;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.stats-tab.active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* 7-Day Practice Dots (week only) */
+.stats-week-dots {
+  margin-bottom: 16px;
+}
+.stats-week-dots-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+.stats-week-dot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+.stats-week-dot-circle {
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+.stats-week-dot.practiced .stats-week-dot-circle {
+  color: var(--accent-gold);
+  opacity: 1;
+}
+.stats-week-dot.today .stats-week-dot-circle {
+  color: var(--accent-gold);
+  opacity: 1;
+  text-shadow: 0 0 6px rgba(201,169,110,0.4);
+}
+.stats-week-dot.future .stats-week-dot-circle {
+  color: var(--text-muted);
+  opacity: 0.2;
+}
+.stats-week-dot-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* Summary Cards */
+.stats-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.stats-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.stats-card-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'EB Garamond', 'Noto Serif SC', serif;
+  line-height: 1.2;
+}
+.stats-card-unit {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+.stats-diff {
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+.stats-diff.up {
+  color: var(--accent-sage);
+}
+.stats-diff.down {
+  color: var(--accent-rose);
+}
+
+/* Personal Best (all-time only) */
+.stats-personal-best {
+  margin-bottom: 20px;
+}
+.stats-best-row {
+  background: var(--bg-card);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stats-best-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.stats-best-text {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+.stats-best-text strong {
+  color: var(--accent-gold);
+  font-weight: 500;
+}
+
+/* Type Breakdown */
+.stats-type-section {
+  margin-bottom: 24px;
+}
+.stats-type-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.stats-type-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 24px 0;
+  font-weight: 300;
+}
+.stats-type-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+.stats-type-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.stats-type-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.stats-type-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.stats-type-name {
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stats-type-bar-wrap {
+  height: 6px;
+  background: var(--bg-card);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 40px;
+}
+.stats-type-bar {
+  height: 100%;
+  background: var(--accent-gold);
+  border-radius: 3px;
+  min-width: 4px;
+  transition: width 0.4s ease;
+  opacity: 0.7;
+}
+.stats-type-nums {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  white-space: nowrap;
+}
+.stats-type-count {
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.stats-type-duration {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
