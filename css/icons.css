@@ -58,3 +58,35 @@
   stroke-linecap: round;
   transition: stroke-dashoffset 1s linear;
 }
+
+/* ---------- 设置页-列表行图标 ---------- */
+.settings-row-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--accent-gold);
+}
+
+/* ---------- 设置页-弹窗顶部大图标 ---------- */
+.contact-icon,
+.share-friend-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--accent-gold);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* ---------- 设置页-联系方式行图标 ---------- */
+.contact-method-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--accent-gold);
+}
+
+/* ---------- 设置页-分享按钮内小图标 ---------- */
+.share-friend-btn-icon {
+  width: 16px;
+  height: 16px;
+}

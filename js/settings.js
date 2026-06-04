@@ -222,8 +222,19 @@ function fallbackCopy(text, successMsg) {
   document.body.removeChild(ta);
 }
 
+// ===== Render SVG Icons from SETTINGS_ICONS =====
+function renderSettingsIcons() {
+  document.querySelectorAll('[data-icon]').forEach(el => {
+    const key = el.getAttribute('data-icon');
+    if (SETTINGS_ICONS[key]) {
+      el.innerHTML = SETTINGS_ICONS[key];
+    }
+  });
+}
+
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
+  renderSettingsIcons();
   renderTypeToggles();
   renderDurToggles();
   initSettingsList();

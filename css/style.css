@@ -1945,12 +1945,7 @@ body {
   gap: 14px;
 }
 
-.settings-row-icon {
-  font-size: 1.3rem;
-  flex-shrink: 0;
-  width: 28px;
-  text-align: center;
-}
+/* .settings-row-icon → css/icons.css */
 
 .settings-row-info {
   display: flex;
@@ -2081,11 +2076,7 @@ body {
 }
 
 /* ===== Contact Modal ===== */
-.contact-icon {
-  font-size: 2.4rem;
-  text-align: center;
-  margin-bottom: 8px;
-}
+/* .contact-icon → css/icons.css */
 
 .contact-methods {
   width: 100%;
@@ -2112,10 +2103,7 @@ body {
   transform: translateY(-1px);
 }
 
-.contact-method-icon {
-  font-size: 1.3rem;
-  flex-shrink: 0;
-}
+/* .contact-method-icon → css/icons.css */
 
 .contact-method-info {
   display: flex;
@@ -2153,11 +2141,7 @@ body {
 }
 
 /* ===== Share Friend Modal ===== */
-.share-friend-icon {
-  font-size: 2.4rem;
-  text-align: center;
-  margin-bottom: 8px;
-}
+/* .share-friend-icon → css/icons.css */
 
 .share-friend-actions {
   display: flex;
@@ -2209,9 +2193,7 @@ body {
   color: #fff;
 }
 
-.share-friend-btn-icon {
-  font-size: 1rem;
-}
+/* .share-friend-btn-icon → css/icons.css */
 
 .share-friend-tip {
   margin-top: 12px;

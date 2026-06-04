@@ -25,7 +25,7 @@
       <!-- 每日提醒 -->
       <div class="settings-row" onclick="showToast('即将上线，敬请期待')">
         <div class="settings-row-left">
-          <span class="settings-row-icon">🔔</span>
+          <span class="settings-row-icon" data-icon="bell"></span>
           <div class="settings-row-info">
             <span class="settings-row-title">每日提醒</span>
             <span class="settings-row-sub">设置冥想提醒时间</span>
@@ -37,7 +37,7 @@
       <!-- 冥想类型偏好 -->
       <a class="settings-row" href="type-prefs.html">
         <div class="settings-row-left">
-          <span class="settings-row-icon">🧘</span>
+          <span class="settings-row-icon" data-icon="meditation"></span>
           <div class="settings-row-info">
             <span class="settings-row-title">冥想类型偏好</span>
             <span class="settings-row-sub" id="type-prefs-sub">7/20 已启用</span>
@@ -49,7 +49,7 @@
       <!-- 时长偏好 -->
       <a class="settings-row" href="dur-prefs.html">
         <div class="settings-row-left">
-          <span class="settings-row-icon">⏱</span>
+          <span class="settings-row-icon" data-icon="timer"></span>
           <div class="settings-row-info">
             <span class="settings-row-title">时长偏好</span>
             <span class="settings-row-sub" id="dur-prefs-sub">5/10 已启用</span>
@@ -61,7 +61,7 @@
       <!-- 联系开发者 -->
       <div class="settings-row" onclick="openContact()">
         <div class="settings-row-left">
-          <span class="settings-row-icon">✉️</span>
+          <span class="settings-row-icon" data-icon="mail"></span>
           <div class="settings-row-info">
             <span class="settings-row-title">联系开发者</span>
             <span class="settings-row-sub">反馈建议或联系我们</span>
@@ -73,7 +73,7 @@
       <!-- 关于我们 -->
       <div class="settings-row" onclick="openAbout()">
         <div class="settings-row-left">
-          <span class="settings-row-icon">🙏</span>
+          <span class="settings-row-icon" data-icon="hands"></span>
           <div class="settings-row-info">
             <span class="settings-row-title">关于我们</span>
             <span class="settings-row-sub">版本信息与产品介绍</span>
@@ -85,7 +85,7 @@
       <!-- 分享给好友 -->
       <div class="settings-row" onclick="openShare()">
         <div class="settings-row-left">
-          <span class="settings-row-icon">🔗</span>
+          <span class="settings-row-icon" data-icon="link"></span>
           <div class="settings-row-info">
             <span class="settings-row-title">分享给好友</span>
             <span class="settings-row-sub">邀请朋友一起冥想</span>
@@ -101,7 +101,6 @@
 <div class="about-overlay" id="contact-overlay" onclick="closeContact(event)">
   <div class="about-sheet" onclick="event.stopPropagation()">
     <div class="about-sheet-handle"></div>
-    <div class="contact-icon">✉️</div>
     <div class="about-name">联系开发者</div>
     <div class="about-desc">
       感谢您使用联结 · 冥想日记<br><br>
@@ -110,18 +109,18 @@
     </div>
     <div class="contact-methods">
       <div class="contact-method" onclick="copyEmail()">
-        <span class="contact-method-icon">📧</span>
+        <span class="contact-method-icon" data-icon="envelope"></span>
         <div class="contact-method-info">
           <span class="contact-method-label">邮箱</span>
-          <span class="contact-method-value" id="contact-email">zen@chanxin.app</span>
+          <span class="contact-method-value" id="contact-email">utopiazen.163.com</span>
         </div>
         <span class="contact-method-action">复制</span>
       </div>
       <div class="contact-method" onclick="copyWechat()">
-        <span class="contact-method-icon">💬</span>
+        <span class="contact-method-icon" data-icon="chat"></span>
         <div class="contact-method-info">
           <span class="contact-method-label">微信</span>
-          <span class="contact-method-value" id="contact-wechat">ChanXin_App</span>
+          <span class="contact-method-value" id="contact-wechat">caozhongwei9</span>
         </div>
         <span class="contact-method-action">复制</span>
       </div>
@@ -134,7 +133,7 @@
 <div class="about-overlay" id="share-friend-overlay" onclick="closeShareFriend(event)">
   <div class="about-sheet" onclick="event.stopPropagation()">
     <div class="about-sheet-handle"></div>
-    <div class="share-friend-icon">🔗</div>
+    <div class="share-friend-icon" data-icon="link"></div>
     <div class="about-name">分享给好友</div>
     <div class="about-desc">
       邀请朋友一起开始冥想之旅，<br>
@@ -142,11 +141,11 @@
     </div>
     <div class="share-friend-actions">
       <button class="share-friend-btn primary" onclick="copyShareLink()">
-        <span class="share-friend-btn-icon">📋</span>
+        <span class="share-friend-btn-icon" data-icon="clipboard"></span>
         复制链接
       </button>
       <button class="share-friend-btn wechat" onclick="shareToWechat()">
-        <span class="share-friend-btn-icon">💚</span>
+        <span class="share-friend-btn-icon" data-icon="heart"></span>
         微信分享
       </button>
     </div>

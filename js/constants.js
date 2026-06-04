@@ -97,6 +97,20 @@ const ALL_DURATIONS = [
 // Default enabled duration minutes (initial preset for new users)
 const DEFAULT_DURATION_MINS = [10, 20, 30, 45, 60];
 
+// ===== Settings Page Icons (inline SVG) =====
+const SETTINGS_ICONS = {
+  bell: `<svg ${SVG_ATTR}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><line x1="12" y1="2" x2="12" y2="4"/></svg>`,
+  meditation: `<svg ${SVG_ATTR}><circle cx="12" cy="6" r="2.5"/><path d="M7 18c0-4 2.5-7 5-7s5 3 5 7"/><path d="M9 13h6"/><path d="M6 18h12"/></svg>`,
+  timer: `<svg ${SVG_ATTR}><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5"/><path d="M9 2h6"/><path d="M12 2v2"/></svg>`,
+  mail: `<svg ${SVG_ATTR}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 6L2 6"/></svg>`,
+  hands: `<svg ${SVG_ATTR}><path d="M8 14c0-2 1-3 2-3s2 1 2 3"/><path d="M12 11c0-2 1-3 2-3s2 1 2 3"/><path d="M8 14c0 3 2 5 4 5s4-2 4-5"/><path d="M12 19v2"/><path d="M12 3v2"/></svg>`,
+  link: `<svg ${SVG_ATTR}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+  envelope: `<svg ${SVG_ATTR}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 6L2 6"/></svg>`,
+  chat: `<svg ${SVG_ATTR}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+  clipboard: `<svg ${SVG_ATTR}><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>`,
+  heart: `<svg ${SVG_ATTR}><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+};
+
 const BREATH_PHASES = [
   { text: '吸气...', duration: 4000 },
   { text: '屏息...', duration: 4000 },
