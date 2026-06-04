@@ -2656,6 +2656,7 @@ body {
   background: var(--bg-card);
   border-radius: 10px;
   padding: 3px;
+  margin-top: 16px;
   margin-bottom: 20px;
 }
 .stats-tab {
@@ -2804,9 +2805,12 @@ body {
 }
 .stats-type-item {
   display: grid;
-  grid-template-columns: 80px 1fr auto;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 10px;
+}
+.stats-type-total {
+  grid-template-columns: auto auto;
 }
 .stats-type-info {
   display: flex;

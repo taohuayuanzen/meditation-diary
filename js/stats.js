@@ -321,7 +321,6 @@ function renderDurationBreakdown() {
     <div class="stats-type-info">
       <span class="stats-type-name">总计</span>
     </div>
-    <div class="stats-type-bar-wrap"></div>
     <div class="stats-type-nums">
       <span class="stats-type-duration">${formatDuration(totalMinutes)}</span>
     </div>
@@ -332,7 +331,6 @@ function renderDurationBreakdown() {
     const barWidth = maxMinutes > 0 ? Math.round(item.minutes / maxMinutes * 100) : 0;
     return `<div class="stats-type-item">
       <div class="stats-type-info">
-        <span class="stats-type-icon">${item.type.icon}</span>
         <span class="stats-type-name">${item.type.name}</span>
       </div>
       <div class="stats-type-bar-wrap">
@@ -382,7 +380,6 @@ function renderCountBreakdown() {
     <div class="stats-type-info">
       <span class="stats-type-name">总计</span>
     </div>
-    <div class="stats-type-bar-wrap"></div>
     <div class="stats-type-nums">
       <span class="stats-type-count">${totalCount}</span>
     </div>
@@ -393,7 +390,6 @@ function renderCountBreakdown() {
     const barWidth = maxCount > 0 ? Math.round(item.count / maxCount * 100) : 0;
     return `<div class="stats-type-item">
       <div class="stats-type-info">
-        <span class="stats-type-icon">${item.type.icon}</span>
         <span class="stats-type-name">${item.type.name}</span>
       </div>
       <div class="stats-type-bar-wrap">
@@ -444,9 +440,8 @@ function renderAvgBreakdown() {
   // Total row
   let html = `<div class="stats-type-item stats-type-total">
     <div class="stats-type-info">
-      <span class="stats-type-name">总计</span>
+      <span class="stats-type-name">平均</span>
     </div>
-    <div class="stats-type-bar-wrap"></div>
     <div class="stats-type-nums">
       <span class="stats-type-duration">${formatDuration(Math.round(totalAvg))}</span>
     </div>
@@ -457,7 +452,6 @@ function renderAvgBreakdown() {
     const barWidth = maxAvg > 0 ? Math.round(item.avg / maxAvg * 100) : 0;
     return `<div class="stats-type-item">
       <div class="stats-type-info">
-        <span class="stats-type-icon">${item.type.icon}</span>
         <span class="stats-type-name">${item.type.name}</span>
       </div>
       <div class="stats-type-bar-wrap">
