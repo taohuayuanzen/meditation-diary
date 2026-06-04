@@ -25,9 +25,10 @@ function deleteEntry(id) {
 
 // ===== Settings =====
 const DEFAULT_SETTINGS = {
-  enabledTypes: ['sitting_zen','walking_zen','life_zen','standing_stake','yoga','pranayama','chanting','baduanjin','yijinjing','taichi'],
+  enabledTypes: ['sitting_zen','walking_zen','life_zen','standing_stake','yoga','pranayama','chanting','prostration','jingang_gong','baduanjin','yijinjing','taichi'],
   enabledDurations: [10, 20, 30, 45, 60],  // 时长偏好（分钟）
   lastSetup: null,  // { type, duration, isCustomDuration, sound } — 上次冥想设置
+  moodPopup: { autoBefore: false, autoAfter: false },  // 心情弹窗自动弹出偏好
 };
 
 function loadSettings() {
@@ -89,6 +90,18 @@ function setEnabledDurations(mins) {
 function getEnabledDurationOptions() {
   const mins = getEnabledDurations();
   return ALL_DURATIONS.filter(d => mins.includes(d.min));
+}
+
+// ===== Mood Popup Preferences =====
+function getMoodPopupSettings() {
+  const settings = loadSettings();
+  return settings.moodPopup || DEFAULT_SETTINGS.moodPopup;
+}
+
+function setMoodPopupSettings(popup) {
+  const settings = loadSettings();
+  settings.moodPopup = popup;
+  saveSettings(settings);
 }
 
 // ===== Last Setup (remember user's last meditation choices) =====

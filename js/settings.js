@@ -26,8 +26,8 @@ function toggleType(id) {
   const idx = enabledIds.indexOf(id);
   if (idx > -1) {
     // Check minimum
-    if (enabledIds.length <= 4) {
-      showToast('至少需要选择 4 项');
+    if (enabledIds.length <= 6) {
+      showToast('至少需要选择 6 项');
       return;
     }
     enabledIds.splice(idx, 1);
@@ -51,7 +51,7 @@ function updateCount() {
   const countEl = document.getElementById('type-count');
   if (countEl) {
     countEl.textContent = `${enabledIds.length}/${ALL_TYPES.length}`;
-    countEl.classList.toggle('warn', enabledIds.length <= 4);
+    countEl.classList.toggle('warn', enabledIds.length <= 6);
   }
 }
 
@@ -124,6 +124,52 @@ function initSettingsList() {
     const durs = getEnabledDurations();
     durSubEl.textContent = `${durs.length}/${ALL_DURATIONS.length} 已启用`;
   }
+  const moodSubEl = document.getElementById('mood-prefs-sub');
+  if (moodSubEl) {
+    const popup = getMoodPopupSettings();
+    const labels = [];
+    if (popup.autoBefore) labels.push('冥想前');
+    if (popup.autoAfter) labels.push('冥想后');
+    moodSubEl.textContent = labels.length ? labels.join('·') + '自动弹出' : '已关闭';
+  }
+}
+
+// ===== Mood Popup Preferences =====
+const MOOD_POPUP_OPTIONS = [
+  { key: 'autoBefore', name: '冥想前心情', desc: '进入计时页时自动弹出' },
+  { key: 'autoAfter', name: '冥想后心情', desc: '进入反馈页时自动弹出' },
+];
+
+function renderMoodPopupToggles() {
+  const list = document.getElementById('mood-popup-toggle-list');
+  if (!list) return;
+
+  const popup = getMoodPopupSettings();
+
+  list.innerHTML = MOOD_POPUP_OPTIONS.map(opt => {
+    const isOn = popup[opt.key];
+    return `
+      <div class="dur-toggle-item${isOn ? ' on' : ''}" data-key="${opt.key}" onclick="toggleMoodPopup('${opt.key}')">
+        <div class="mood-popup-toggle-info">
+          <span class="mood-popup-toggle-name">${opt.name}</span>
+          <span class="mood-popup-toggle-desc">${opt.desc}</span>
+        </div>
+        <span class="type-toggle-switch${isOn ? ' active' : ''}"></span>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleMoodPopup(key) {
+  const popup = getMoodPopupSettings();
+  popup[key] = !popup[key];
+  setMoodPopupSettings(popup);
+
+  // Update UI
+  const item = document.querySelector(`.dur-toggle-item[data-key="${key}"]`);
+  const sw = item?.querySelector('.type-toggle-switch');
+  if (item) item.classList.toggle('on', popup[key]);
+  if (sw) sw.classList.toggle('active', popup[key]);
 }
 
 // ===== About Modal =====
@@ -237,5 +283,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSettingsIcons();
   renderTypeToggles();
   renderDurToggles();
+  renderMoodPopupToggles();
   initSettingsList();
 });

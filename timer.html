@@ -52,28 +52,22 @@
   </div>
 </div>
 
-<!-- Mood Sheet (Two-step) -->
-<div class="setup-sheet-overlay" id="mood-sheet-overlay" onclick="closeMoodSheet()">
+<!-- Mood Sheet (shared MoodPicker component) -->
+<div class="setup-sheet-overlay" id="mood-sheet-overlay">
   <div class="setup-sheet" onclick="event.stopPropagation()">
     <div class="setup-sheet-handle"></div>
-
-    <!-- Sheet Header -->
     <div class="mood-sheet-header">
-      <button class="mood-sheet-back hidden" id="mood-back-btn" onclick="moodSheetBack()">←</button>
+      <button class="mood-sheet-back hidden" id="mood-back-btn" onclick="moodPicker.back()">←</button>
       <div class="mood-sheet-title-center" id="mood-sheet-title">记录此刻心情</div>
-      <button class="mood-sheet-close" onclick="closeMoodSheet()">✕</button>
+      <button class="mood-sheet-close" onclick="moodPicker.close()">✕</button>
     </div>
-
-    <!-- Step 1: Category Selection -->
     <div id="mood-step1">
       <div class="mood-cat-row" id="mood-cat-row"></div>
     </div>
-
-    <!-- Step 2: Feeling Selection -->
     <div class="mood-feelings-wrap" id="mood-step2">
       <div class="mood-feelings-label" id="mood-feelings-label">选择你的感受</div>
       <div class="mood-feelings-grid" id="mood-feelings-grid"></div>
-      <button class="mood-feelings-confirm" id="mood-confirm-btn" onclick="confirmMoodSelection()" disabled>确认</button>
+      <button class="mood-feelings-confirm" id="mood-confirm-btn" onclick="moodPicker.confirm()" disabled>确认</button>
     </div>
   </div>
 </div>
@@ -83,6 +77,7 @@
 <script src="js/session.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/utils.js"></script>
+<script src="js/mood-picker.js"></script>
 <script src="js/timer.js"></script>
 </body>
 </html>

@@ -1914,6 +1914,34 @@ body {
   color: var(--accent-gold);
 }
 
+.mood-popup-toggle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ===== Mood Popup Preferences ===== */
+.mood-popup-toggle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.mood-popup-toggle-name {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+.mood-popup-toggle-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+.dur-toggle-item.on .mood-popup-toggle-name {
+  color: var(--accent-gold);
+}
+
 /* ===== Settings List (main settings page) ===== */
 .settings-list {
   margin-top: 16px;

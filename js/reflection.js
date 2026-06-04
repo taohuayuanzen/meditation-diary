@@ -5,12 +5,8 @@ let refState = {
   moodAfter: null,  // { category: 'pleasant', feelings: ['愉悦','感恩'] }
 };
 
-// Mood sheet state for reflection page
-let refMoodState = {
-  selectedCategory: null,
-  selectedFeelings: [],
-  step: 1,
-};
+// MoodPicker instance (initialized in DOMContentLoaded)
+let moodPicker;
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -27,7 +23,32 @@ document.addEventListener('DOMContentLoaded', () => {
     `本次冥想 ${session.minutes || Math.max(1, Math.round(session.elapsed / 60))} 分钟`;
   document.getElementById('insight-text').value = '';
 
+  // Init MoodPicker
+  moodPicker = new MoodPicker({
+    overlayId: 'mood-ref-sheet-overlay',
+    step1Id: 'mood-ref-step1',
+    step2Id: 'mood-ref-step2',
+    catRowId: 'mood-ref-cat-row',
+    feelingsGridId: 'mood-ref-feelings-grid',
+    backBtnId: 'mood-ref-back-btn',
+    titleId: 'mood-ref-title',
+    confirmBtnId: 'mood-ref-confirm-btn',
+    titleLabelId: 'mood-ref-feelings-label',
+    onConfirm: (category, feelings) => {
+      refState.moodAfter = { category, feelings };
+      updateMoodTriggerDisplay();
+    }
+  });
+
   updateMoodTriggerDisplay();
+
+  // Auto-open mood picker if enabled
+  const moodPopup = getMoodPopupSettings();
+  if (moodPopup.autoAfter) {
+    setTimeout(() => {
+      openReflectionMoodSheet();
+    }, 800);
+  }
 });
 
 // ===== Mood Trigger Display =====
@@ -52,103 +73,11 @@ function updateMoodTriggerDisplay() {
   trigger.classList.remove('has-mood');
 }
 
-// ===== Two-step Mood Sheet =====
+// ===== Mood Sheet (delegated to MoodPicker) =====
 
 function openReflectionMoodSheet() {
-  refMoodState.step = 1;
-  refMoodState.selectedCategory = (refState.moodAfter && refState.moodAfter.category)
-    ? refState.moodAfter.category : null;
-  refMoodState.selectedFeelings = (refState.moodAfter && refState.moodAfter.feelings)
-    ? [...refState.moodAfter.feelings] : [];
-
-  renderRefMoodStep1();
-  document.getElementById('mood-ref-sheet-overlay').classList.add('active');
-}
-
-function closeReflectionMoodSheet() {
-  document.getElementById('mood-ref-sheet-overlay').classList.remove('active');
-}
-
-function renderRefMoodStep1() {
-  refMoodState.step = 1;
-
-  document.getElementById('mood-ref-back-btn').classList.add('hidden');
-  document.getElementById('mood-ref-title').textContent = '此刻心情';
-  document.getElementById('mood-ref-step1').style.display = '';
-  document.getElementById('mood-ref-step2').classList.remove('active');
-
-  const row = document.getElementById('mood-ref-cat-row');
-  row.innerHTML = MOOD_CATEGORIES.map(cat => `
-    <div class="mood-cat-item${refMoodState.selectedCategory === cat.id ? ' selected' : ''}"
-         onclick="selectRefMoodCategory('${cat.id}')">
-      <span class="mood-cat-icon">${cat.icon}</span>
-      <span class="mood-cat-name">${cat.name}</span>
-    </div>
-  `).join('');
-}
-
-function selectRefMoodCategory(catId) {
-  refMoodState.selectedCategory = catId;
-  refMoodState.selectedFeelings = [];
-  renderRefMoodStep2();
-}
-
-function renderRefMoodStep2() {
-  refMoodState.step = 2;
-
-  const cat = MOOD_CATEGORIES.find(c => c.id === refMoodState.selectedCategory);
-  if (!cat) return;
-
-  document.getElementById('mood-ref-back-btn').classList.remove('hidden');
-  document.getElementById('mood-ref-title').textContent = cat.name;
-  document.getElementById('mood-ref-step1').style.display = 'none';
-  document.getElementById('mood-ref-step2').classList.add('active');
-
-  const grid = document.getElementById('mood-ref-feelings-grid');
-  grid.innerHTML = cat.feelings.map(f => `
-    <div class="mood-feeling-chip${refMoodState.selectedFeelings.includes(f) ? ' selected' : ''}"
-         onclick="toggleRefFeeling('${f}')">${f}</div>
-  `).join('');
-
-  updateRefMoodConfirmBtn();
-}
-
-function toggleRefFeeling(feeling) {
-  const idx = refMoodState.selectedFeelings.indexOf(feeling);
-  if (idx >= 0) {
-    refMoodState.selectedFeelings.splice(idx, 1);
-  } else {
-    refMoodState.selectedFeelings.push(feeling);
-  }
-
-  const chips = document.querySelectorAll('#mood-ref-feelings-grid .mood-feeling-chip');
-  chips.forEach(chip => {
-    if (chip.textContent === feeling) {
-      chip.classList.toggle('selected', refMoodState.selectedFeelings.includes(feeling));
-    }
-  });
-
-  updateRefMoodConfirmBtn();
-}
-
-function updateRefMoodConfirmBtn() {
-  document.getElementById('mood-ref-confirm-btn').disabled = refMoodState.selectedFeelings.length === 0;
-}
-
-function moodRefSheetBack() {
-  renderRefMoodStep1();
-}
-
-function confirmRefMoodSelection() {
-  if (!refMoodState.selectedCategory || refMoodState.selectedFeelings.length === 0) return;
-
-  refState.moodAfter = {
-    category: refMoodState.selectedCategory,
-    feelings: [...refMoodState.selectedFeelings],
-  };
-
-  updateMoodTriggerDisplay();
-  closeReflectionMoodSheet();
+  const init = refState.moodAfter;
+  moodPicker.open(init?.category || null, init?.feelings || [], '记录此刻心情');
 }
 
 // ===== Save Entry =====

@@ -15,12 +15,8 @@ let timerState = {
   moodBefore: null,   // { category: 'neutral', feelings: ['宁静','平和'] }
 };
 
-// Mood sheet state
-let moodSheetState = {
-  selectedCategory: null,
-  selectedFeelings: [],
-  step: 1,   // 1 = category, 2 = feelings
-};
+// MoodPicker instance (initialized in DOMContentLoaded)
+let moodPicker;
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,8 +43,44 @@ document.addEventListener('DOMContentLoaded', () => {
     timerState.startTime = Date.now() - (timerState.elapsed * 1000);
   }
 
+  // Init MoodPicker
+  moodPicker = new MoodPicker({
+    overlayId: 'mood-sheet-overlay',
+    step1Id: 'mood-step1',
+    step2Id: 'mood-step2',
+    catRowId: 'mood-cat-row',
+    feelingsGridId: 'mood-feelings-grid',
+    backBtnId: 'mood-back-btn',
+    titleId: 'mood-sheet-title',
+    confirmBtnId: 'mood-confirm-btn',
+    titleLabelId: 'mood-feelings-label',
+    onConfirm: (category, feelings) => {
+      timerState.moodBefore = { category, feelings };
+      updateMoodBtnDisplay();
+      saveSession({
+        type: timerState.type,
+        duration: timerState.duration,
+        sound: timerState.sound,
+        startTime: timerState.startTime,
+        elapsed: timerState.elapsed,
+        paused: timerState.paused,
+        moodBefore: timerState.moodBefore,
+      });
+    }
+  });
+
   initTimerUI();
   startTimer();
+
+  // Auto-open mood picker if enabled and not yet selected
+  const moodPopup = getMoodPopupSettings();
+  if (moodPopup.autoBefore && !timerState.moodBefore) {
+    setTimeout(() => {
+      if (!timerState.moodBefore) {
+        openMoodSheet();
+      }
+    }, 2000);
+  }
 });
 
 // ===== Timer UI =====
@@ -198,122 +230,11 @@ function updateMoodBtnDisplay() {
   btn.classList.remove('selected');
 }
 
-// ===== Two-step Mood Sheet =====
+// ===== Mood Sheet (delegated to MoodPicker) =====
 
 function openMoodSheet() {
-  // Reset sheet state
-  moodSheetState.step = 1;
-  moodSheetState.selectedCategory = (timerState.moodBefore && timerState.moodBefore.category)
-    ? timerState.moodBefore.category : null;
-  moodSheetState.selectedFeelings = (timerState.moodBefore && timerState.moodBefore.feelings)
-    ? [...timerState.moodBefore.feelings] : [];
-
-  renderMoodStep1();
-
-  document.getElementById('mood-sheet-overlay').classList.add('active');
-}
-
-function closeMoodSheet() {
-  document.getElementById('mood-sheet-overlay').classList.remove('active');
-}
-
-function renderMoodStep1() {
-  moodSheetState.step = 1;
-
-  document.getElementById('mood-back-btn').classList.add('hidden');
-  document.getElementById('mood-sheet-title').textContent = '记录此刻心情';
-  document.getElementById('mood-step1').style.display = '';
-  document.getElementById('mood-step2').classList.remove('active');
-
-  const row = document.getElementById('mood-cat-row');
-  row.innerHTML = MOOD_CATEGORIES.map(cat => `
-    <div class="mood-cat-item${moodSheetState.selectedCategory === cat.id ? ' selected' : ''}"
-         onclick="selectMoodCategory('${cat.id}')">
-      <span class="mood-cat-icon">${cat.icon}</span>
-      <span class="mood-cat-name">${cat.name}</span>
-    </div>
-  `).join('');
-}
-
-function selectMoodCategory(catId) {
-  moodSheetState.selectedCategory = catId;
-  moodSheetState.selectedFeelings = [];
-  renderMoodStep2();
-}
-
-function renderMoodStep2() {
-  moodSheetState.step = 2;
-
-  const cat = MOOD_CATEGORIES.find(c => c.id === moodSheetState.selectedCategory);
-  if (!cat) return;
-
-  document.getElementById('mood-back-btn').classList.remove('hidden');
-  document.getElementById('mood-sheet-title').textContent = cat.name;
-  document.getElementById('mood-step1').style.display = 'none';
-  document.getElementById('mood-step2').classList.add('active');
-
-  document.getElementById('mood-feelings-label').textContent = '选择你的感受（可多选）';
-
-  const grid = document.getElementById('mood-feelings-grid');
-  grid.innerHTML = cat.feelings.map(f => `
-    <div class="mood-feeling-chip${moodSheetState.selectedFeelings.includes(f) ? ' selected' : ''}"
-         onclick="toggleFeeling('${f}')">${f}</div>
-  `).join('');
-
-  updateMoodConfirmBtn();
-}
-
-function toggleFeeling(feeling) {
-  const idx = moodSheetState.selectedFeelings.indexOf(feeling);
-  if (idx >= 0) {
-    moodSheetState.selectedFeelings.splice(idx, 1);
-  } else {
-    moodSheetState.selectedFeelings.push(feeling);
-  }
-
-  // Update chip visuals
-  const chips = document.querySelectorAll('#mood-feelings-grid .mood-feeling-chip');
-  chips.forEach(chip => {
-    if (chip.textContent === feeling) {
-      chip.classList.toggle('selected', moodSheetState.selectedFeelings.includes(feeling));
-    }
-  });
-
-  updateMoodConfirmBtn();
-}
-
-function updateMoodConfirmBtn() {
-  const btn = document.getElementById('mood-confirm-btn');
-  btn.disabled = moodSheetState.selectedFeelings.length === 0;
-}
-
-function moodSheetBack() {
-  renderMoodStep1();
-}
-
-function confirmMoodSelection() {
-  if (!moodSheetState.selectedCategory || moodSheetState.selectedFeelings.length === 0) return;
-
-  timerState.moodBefore = {
-    category: moodSheetState.selectedCategory,
-    feelings: [...moodSheetState.selectedFeelings],
-  };
-
-  // Update button appearance
-  updateMoodBtnDisplay();
-
-  // Persist mood to session
-  saveSession({
-    type: timerState.type,
-    duration: timerState.duration,
-    sound: timerState.sound,
-    startTime: timerState.startTime,
-    elapsed: timerState.elapsed,
-    paused: timerState.paused,
-    moodBefore: timerState.moodBefore,
-  });
-
-  closeMoodSheet();
+  const init = timerState.moodBefore;
+  moodPicker.open(init?.category || null, init?.feelings || [], '记录此刻心情');
 }
 
 // ===== Pause / Resume =====

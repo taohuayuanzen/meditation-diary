@@ -62,7 +62,7 @@ const MOOD_CATEGORIES = [
 // Shared SVG attributes for sound & type icons
 const SVG_ATTR = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"';
 
-// ===== Meditation Types (11 items) =====
+// ===== Meditation Types (12 items) =====
 const ALL_TYPES = [
   { id: 'sitting_zen',    icon: `<svg ${SVG_ATTR}><circle cx="12" cy="6" r="2.5"/><path d="M7 18c0-4 2.5-7 5-7s5 3 5 7"/><path d="M9 13h6"/><path d="M6 18h12"/></svg>`, name: '坐禅',       badge: 'badge-body' },
   { id: 'walking_zen',    icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M12 6v5"/><path d="M12 11l-3 7"/><path d="M12 11l3 7"/><path d="M8 20h2"/><path d="M14 20h2"/></svg>`, name: '行禅',       badge: 'badge-body' },
@@ -71,14 +71,15 @@ const ALL_TYPES = [
   { id: 'yoga',           icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M12 6v10"/><path d="M12 16l-4 4"/><path d="M12 12c-2 0-4 1-4 3"/><path d="M8 6c-1 2-1 5 0 7"/><path d="M16 6c1 2 1 5 0 7"/></svg>`, name: '瑜伽',       badge: 'badge-body' },
   { id: 'pranayama',      icon: `<svg ${SVG_ATTR}><path d="M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/><circle cx="3" cy="12" r="0.8" fill="currentColor"/><circle cx="21" cy="12" r="0.8" fill="currentColor"/></svg>`, name: '调息',       badge: 'badge-breath' },
   { id: 'chanting',       icon: `<svg ${SVG_ATTR}><ellipse cx="6" cy="12" rx="2.5" ry="6"/><ellipse cx="18" cy="12" rx="2.5" ry="6"/><path d="M8.5 8h7"/><path d="M8.5 12h7"/><path d="M8.5 16h7"/></svg>`, name: '诵经',       badge: 'badge-focus' },
+  { id: 'prostration',    icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M8 8l4 2 4-2"/><path d="M12 10v3"/><path d="M7 13h10"/><path d="M7 13l-1 7"/><path d="M17 13l1 7"/><path d="M9 20h6"/></svg>`, name: '大礼拜',     badge: 'badge-body' },
+  { id: 'jingang_gong',   icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M12 6v5"/><path d="M7 11h10"/><path d="M7 11l-3 5"/><path d="M17 11l3 5"/><path d="M9 20h6"/></svg>`, name: '金刚功',     badge: 'badge-body' },
   { id: 'baduanjin',      icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M12 6v6"/><path d="M7 9l5 2 5-2"/><path d="M7 9l-2 4"/><path d="M17 9l2 4"/><path d="M9 20h6"/></svg>`, name: '八段锦',     badge: 'badge-body' },
   { id: 'yijinjing',      icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M12 6v8"/><path d="M4 10h16"/><path d="M9 20h6"/></svg>`, name: '易筋经',     badge: 'badge-body' },
   { id: 'taichi',         icon: `<svg ${SVG_ATTR}><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 2.5-2.5 5.5 0 9s2.5 6.5 0 9"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/><circle cx="12" cy="16.5" r="1.2"/></svg>`, name: '太极',       badge: 'badge-body' },
-  { id: 'yoga_nidra',     icon: `<svg ${SVG_ATTR}><circle cx="5" cy="14" r="2"/><path d="M7 14h8"/><path d="M15 14l3 4"/><path d="M15 14l3-2"/><path d="M17 4c1-1 3-1 4 0s1 3 0 4"/></svg>`, name: '瑜伽休息术', badge: 'badge-body' },
 ];
 
-// Default enabled type IDs (first 10)
-const DEFAULT_TYPE_IDS = ['sitting_zen','walking_zen','life_zen','standing_stake','yoga','pranayama','chanting','baduanjin','yijinjing','taichi'];
+// Default enabled type IDs (all 12)
+const DEFAULT_TYPE_IDS = ['sitting_zen','walking_zen','life_zen','standing_stake','yoga','pranayama','chanting','prostration','jingang_gong','baduanjin','yijinjing','taichi'];
 
 // All available duration options (for duration preferences page)
 const ALL_DURATIONS = [
@@ -91,7 +92,9 @@ const ALL_DURATIONS = [
   { min: 45, label: '45', sub: '分钟' },
   { min: 50, label: '50', sub: '分钟' },
   { min: 60, label: '60', sub: '分钟' },
+  { min: 80, label: '80', sub: '分钟' },
   { min: 90, label: '90', sub: '分钟' },
+  { min: 120, label: '120', sub: '分钟' },
 ];
 
 // Default enabled duration minutes (initial preset for new users)
