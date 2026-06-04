@@ -23,13 +23,19 @@
   <div class="page-content">
     <!-- Period Tabs -->
     <div class="stats-tabs">
-      <button class="stats-tab active" data-period="week" onclick="switchPeriod('week')">本周</button>
-      <button class="stats-tab" data-period="month" onclick="switchPeriod('month')">本月</button>
+      <button class="stats-tab active" data-period="week" onclick="switchPeriod('week')">周</button>
+      <button class="stats-tab" data-period="month" onclick="switchPeriod('month')">月</button>
       <button class="stats-tab" data-period="all" onclick="switchPeriod('all')">累计</button>
     </div>
 
     <!-- 7-Day Practice Indicator (week only) -->
     <!-- <div class="stats-week-dots" id="stats-week-dots"></div> -->
+
+    <!-- Week Navigation (week only) -->
+    <div class="stats-week-nav" id="stats-week-nav"></div>
+
+    <!-- Month Navigation (month only) -->
+    <div class="stats-month-nav" id="stats-month-nav"></div>
 
     <!-- Summary Cards -->
     <div class="stats-summary" id="stats-summary"></div>
