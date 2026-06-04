@@ -1,6 +1,7 @@
 // ===== Settings Page Logic =====
 
 let enabledIds = [];
+let enabledDurs = [];
 
 function renderTypeToggles() {
   enabledIds = getEnabledTypeIds();
@@ -54,12 +55,74 @@ function updateCount() {
   }
 }
 
+// ===== Duration Preferences =====
+function renderDurToggles() {
+  enabledDurs = getEnabledDurations();
+  const grid = document.getElementById('dur-toggle-grid');
+  if (!grid) return;
+
+  grid.innerHTML = ALL_DURATIONS.map(d => {
+    const isOn = enabledDurs.includes(d.min);
+    return `
+      <div class="dur-toggle-item${isOn ? ' on' : ''}" data-min="${d.min}" onclick="toggleDuration(${d.min})">
+        <span class="dur-toggle-name">${d.min} 分钟</span>
+        <span class="type-toggle-switch${isOn ? ' active' : ''}"></span>
+      </div>
+    `;
+  }).join('');
+
+  updateDurCount();
+}
+
+function toggleDuration(min) {
+  const idx = enabledDurs.indexOf(min);
+  if (idx > -1) {
+    // Check minimum (3)
+    if (enabledDurs.length <= 3) {
+      showToast('至少需要选择 3 项');
+      return;
+    }
+    enabledDurs.splice(idx, 1);
+  } else {
+    // Check maximum (5)
+    if (enabledDurs.length >= 5) {
+      showToast('最多选择 5 项');
+      return;
+    }
+    enabledDurs.push(min);
+  }
+
+  // Save immediately
+  setEnabledDurations(enabledDurs);
+
+  // Update UI
+  const item = document.querySelector(`.dur-toggle-item[data-min="${min}"]`);
+  const sw = item?.querySelector('.type-toggle-switch');
+  if (item) item.classList.toggle('on', enabledDurs.includes(min));
+  if (sw) sw.classList.toggle('active', enabledDurs.includes(min));
+
+  updateDurCount();
+}
+
+function updateDurCount() {
+  const countEl = document.getElementById('dur-count');
+  if (countEl) {
+    countEl.textContent = `${enabledDurs.length}/${ALL_DURATIONS.length}`;
+    countEl.classList.toggle('warn', enabledDurs.length <= 3 || enabledDurs.length >= 5);
+  }
+}
+
 // ===== Settings List Page (main settings) =====
 function initSettingsList() {
   const subEl = document.getElementById('type-prefs-sub');
   if (subEl) {
     const ids = getEnabledTypeIds();
     subEl.textContent = `${ids.length}/${ALL_TYPES.length} 已启用`;
+  }
+  const durSubEl = document.getElementById('dur-prefs-sub');
+  if (durSubEl) {
+    const durs = getEnabledDurations();
+    durSubEl.textContent = `${durs.length}/${ALL_DURATIONS.length} 已启用`;
   }
 }
 
@@ -80,8 +143,99 @@ function closeAbout(e) {
   }
 }
 
+// ===== Contact Modal =====
+function openContact() {
+  const overlay = document.getElementById('contact-overlay');
+  if (overlay) overlay.classList.add('active');
+}
+
+function closeContact(e) {
+  if (e && e.target && !e.target.classList.contains('about-overlay')) return;
+  const overlay = document.getElementById('contact-overlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function copyEmail() {
+  const email = document.getElementById('contact-email')?.textContent || 'zen@chanxin.app';
+  copyText(email, '邮箱已复制');
+}
+
+function copyWechat() {
+  const wechat = document.getElementById('contact-wechat')?.textContent || 'ChanXin_App';
+  copyText(wechat, '微信号已复制');
+}
+
+// ===== Share Friend Modal =====
+function openShare() {
+  const overlay = document.getElementById('share-friend-overlay');
+  if (overlay) overlay.classList.add('active');
+  const tip = document.getElementById('share-friend-tip');
+  if (tip) tip.textContent = '';
+}
+
+function closeShareFriend(e) {
+  if (e && e.target && !e.target.classList.contains('about-overlay')) return;
+  const overlay = document.getElementById('share-friend-overlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function copyShareLink() {
+  const url = window.location.origin + window.location.pathname.replace('settings.html', 'index.html');
+  const text = '推荐你一个冥想日记应用「联结」—— 纯前端、无广告、数据本地存储 🧘‍♂️ ' + url;
+  copyText(text, '链接已复制，快去分享吧');
+}
+
+function shareToWechat() {
+  const tip = document.getElementById('share-friend-tip');
+  if (tip) {
+    tip.textContent = '请复制链接后，打开微信分享给好友或朋友圈';
+  }
+  copyShareLink();
+}
+
+// ===== Utility =====
+function copyText(text, successMsg) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(successMsg);
+    }).catch(() => {
+      fallbackCopy(text, successMsg);
+    });
+  } else {
+    fallbackCopy(text, successMsg);
+  }
+}
+
+function fallbackCopy(text, successMsg) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast(successMsg);
+  } catch {
+    showToast('复制失败，请手动复制');
+  }
+  document.body.removeChild(ta);
+}
+
+// ===== Render SVG Icons from SETTINGS_ICONS =====
+function renderSettingsIcons() {
+  document.querySelectorAll('[data-icon]').forEach(el => {
+    const key = el.getAttribute('data-icon');
+    if (SETTINGS_ICONS[key]) {
+      el.innerHTML = SETTINGS_ICONS[key];
+    }
+  });
+}
+
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
+  renderSettingsIcons();
   renderTypeToggles();
+  renderDurToggles();
   initSettingsList();
 });

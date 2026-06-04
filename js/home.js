@@ -19,7 +19,8 @@ function renderGreeting() {
   else { greeting = '夜幕降临'; sub = '以冥想结束这一天'; }
 
   document.getElementById('greeting-text').textContent = greeting;
-  document.getElementById('greeting-sub').textContent = sub;
+  const subEl = document.getElementById('greeting-sub');
+  if (subEl) subEl.textContent = sub;
 }
 
 // ===== Week Dots (7 circles for Mon-Sun, compact) =====

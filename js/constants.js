@@ -59,41 +59,57 @@ const MOOD_CATEGORIES = [
   },
 ];
 
-// ===== Full Type Pool (20 items) =====
+// Shared SVG attributes for sound & type icons
+const SVG_ATTR = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"';
+
+// ===== Meditation Types (11 items) =====
 const ALL_TYPES = [
-  { id: 'breath',      icon: '🌬', name: '观呼吸',      badge: 'badge-breath' },
-  { id: 'loving',      icon: '💗', name: '慈心禅',      badge: 'badge-loving' },
-  { id: 'buddha',      icon: '🙏', name: '佛随念',      badge: 'badge-focus' },
-  { id: 'body',        icon: '🧘', name: '身至念',      badge: 'badge-body' },
-  { id: 'death',       icon: '💀', name: '死随念',      badge: 'badge-focus' },
-  { id: 'vipassana',   icon: '👁', name: '毗婆舍那',    badge: 'badge-breath' },
-  { id: 'walking',     icon: '🚶', name: '行禅',        badge: 'badge-body' },
-  { id: 'anapanasati', icon: '🫁', name: '安那般那念',  badge: 'badge-breath' },
-  { id: 'metta',       icon: '🌸', name: '慈心修习',    badge: 'badge-loving' },
-  { id: 'karuna',      icon: '💧', name: '悲心修习',    badge: 'badge-loving' },
-  { id: 'mudita',      icon: '🌻', name: '喜心修习',    badge: 'badge-loving' },
-  { id: 'upekkha',     icon: '⚖️', name: '舍心修习',   badge: 'badge-focus' },
-  { id: 'four_basis',  icon: '☸️', name: '四念处',     badge: 'badge-focus' },
-  { id: 'zen',         icon: '☯️', name: '坐禅',       badge: 'badge-body' },
-  { id: 'koan',        icon: '❓', name: '公案参究',    badge: 'badge-focus' },
-  { id: 'mantra',      icon: '📿', name: '持咒',        badge: 'badge-breath' },
-  { id: 'visualization',icon:'🌅',name: '观想',        badge: 'badge-loving' },
-  { id: 'tai_chi',     icon: '🥋', name: '太极',        badge: 'badge-body' },
-  { id: 'qigong',      icon: '💨', name: '气功',        badge: 'badge-body' },
-  { id: 'yoga_nidra',  icon: '🌙', name: '瑜伽休息术',  badge: 'badge-body' },
+  { id: 'sitting_zen',    icon: `<svg ${SVG_ATTR}><circle cx="12" cy="6" r="2.5"/><path d="M7 18c0-4 2.5-7 5-7s5 3 5 7"/><path d="M9 13h6"/><path d="M6 18h12"/></svg>`, name: '坐禅',       badge: 'badge-body' },
+  { id: 'walking_zen',    icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M12 6v5"/><path d="M12 11l-3 7"/><path d="M12 11l3 7"/><path d="M8 20h2"/><path d="M14 20h2"/></svg>`, name: '行禅',       badge: 'badge-body' },
+  { id: 'life_zen',       icon: `<svg ${SVG_ATTR}><path d="M5 15c0-4 3-7 7-7s7 3 7 7"/><path d="M7 15c0 2 2 4 5 4s5-2 5-4"/><path d="M9 8c-1-2-0.5-4 1-5"/><path d="M14 8c-1-2-0.5-4 1-5"/></svg>`, name: '生活禅',     badge: 'badge-loving' },
+  { id: 'standing_stake', icon: `<svg ${SVG_ATTR}><circle cx="12" cy="5" r="2"/><path d="M12 7v8"/><path d="M7 11c0 2 2 3 5 3s5-1 5-3"/><path d="M9 20h2"/><path d="M13 20h2"/></svg>`, name: '站桩',       badge: 'badge-body' },
+  { id: 'yoga',           icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M12 6v10"/><path d="M12 16l-4 4"/><path d="M12 12c-2 0-4 1-4 3"/><path d="M8 6c-1 2-1 5 0 7"/><path d="M16 6c1 2 1 5 0 7"/></svg>`, name: '瑜伽',       badge: 'badge-body' },
+  { id: 'pranayama',      icon: `<svg ${SVG_ATTR}><path d="M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/><circle cx="3" cy="12" r="0.8" fill="currentColor"/><circle cx="21" cy="12" r="0.8" fill="currentColor"/></svg>`, name: '调息',       badge: 'badge-breath' },
+  { id: 'chanting',       icon: `<svg ${SVG_ATTR}><ellipse cx="6" cy="12" rx="2.5" ry="6"/><ellipse cx="18" cy="12" rx="2.5" ry="6"/><path d="M8.5 8h7"/><path d="M8.5 12h7"/><path d="M8.5 16h7"/></svg>`, name: '诵经',       badge: 'badge-focus' },
+  { id: 'baduanjin',      icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M12 6v6"/><path d="M7 9l5 2 5-2"/><path d="M7 9l-2 4"/><path d="M17 9l2 4"/><path d="M9 20h6"/></svg>`, name: '八段锦',     badge: 'badge-body' },
+  { id: 'yijinjing',      icon: `<svg ${SVG_ATTR}><circle cx="12" cy="4" r="2"/><path d="M12 6v8"/><path d="M4 10h16"/><path d="M9 20h6"/></svg>`, name: '易筋经',     badge: 'badge-body' },
+  { id: 'taichi',         icon: `<svg ${SVG_ATTR}><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 2.5-2.5 5.5 0 9s2.5 6.5 0 9"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/><circle cx="12" cy="16.5" r="1.2"/></svg>`, name: '太极',       badge: 'badge-body' },
+  { id: 'yoga_nidra',     icon: `<svg ${SVG_ATTR}><circle cx="5" cy="14" r="2"/><path d="M7 14h8"/><path d="M15 14l3 4"/><path d="M15 14l3-2"/><path d="M17 4c1-1 3-1 4 0s1 3 0 4"/></svg>`, name: '瑜伽休息术', badge: 'badge-body' },
 ];
 
-// Default enabled type IDs (first 7)
-const DEFAULT_TYPE_IDS = ['breath','loving','buddha','body','death','vipassana','walking'];
+// Default enabled type IDs (first 10)
+const DEFAULT_TYPE_IDS = ['sitting_zen','walking_zen','life_zen','standing_stake','yoga','pranayama','chanting','baduanjin','yijinjing','taichi'];
 
-const DURATIONS = [
-  { min: 5, label: '5', sub: '初学' },
-  { min: 10, label: '10', sub: '日常' },
-  { min: 15, label: '15', sub: '进阶' },
-  { min: 30, label: '30', sub: '深入' },
-  { min: 45, label: '45', sub: '精进' },
-  { min: 60, label: '60', sub: '禅定' },
+// All available duration options (for duration preferences page)
+const ALL_DURATIONS = [
+  { min: 5,  label: '5',  sub: '分钟' },
+  { min: 10, label: '10', sub: '分钟' },
+  { min: 15, label: '15', sub: '分钟' },
+  { min: 20, label: '20', sub: '分钟' },
+  { min: 30, label: '30', sub: '分钟' },
+  { min: 40, label: '40', sub: '分钟' },
+  { min: 45, label: '45', sub: '分钟' },
+  { min: 50, label: '50', sub: '分钟' },
+  { min: 60, label: '60', sub: '分钟' },
+  { min: 90, label: '90', sub: '分钟' },
 ];
+
+// Default enabled duration minutes (initial preset for new users)
+const DEFAULT_DURATION_MINS = [10, 20, 30, 45, 60];
+
+// ===== Settings Page Icons (inline SVG) =====
+const SETTINGS_ICONS = {
+  bell: `<svg ${SVG_ATTR}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><line x1="12" y1="2" x2="12" y2="4"/></svg>`,
+  meditation: `<svg ${SVG_ATTR}><circle cx="12" cy="6" r="2.5"/><path d="M7 18c0-4 2.5-7 5-7s5 3 5 7"/><path d="M9 13h6"/><path d="M6 18h12"/></svg>`,
+  timer: `<svg ${SVG_ATTR}><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5"/><path d="M9 2h6"/><path d="M12 2v2"/></svg>`,
+  mail: `<svg ${SVG_ATTR}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 6L2 6"/></svg>`,
+  hands: `<svg ${SVG_ATTR}><path d="M8 14c0-2 1-3 2-3s2 1 2 3"/><path d="M12 11c0-2 1-3 2-3s2 1 2 3"/><path d="M8 14c0 3 2 5 4 5s4-2 4-5"/><path d="M12 19v2"/><path d="M12 3v2"/></svg>`,
+  link: `<svg ${SVG_ATTR}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+  envelope: `<svg ${SVG_ATTR}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 6L2 6"/></svg>`,
+  chat: `<svg ${SVG_ATTR}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+  clipboard: `<svg ${SVG_ATTR}><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>`,
+  heart: `<svg ${SVG_ATTR}><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+};
 
 const BREATH_PHASES = [
   { text: '吸气...', duration: 4000 },
@@ -103,11 +119,26 @@ const BREATH_PHASES = [
 ];
 
 const SOUNDS = [
-  { id: 'muyu', name: '木鱼', icon: '🪵' },
-  { id: 'yinching', name: '引磬', icon: '🔔' },
-  { id: 'dingxia', name: '丁夏', icon: '✨' },
-  { id: 'singing_bowl', name: '颂钵', icon: '🪣' },
-  { id: 'vibrate', name: '震动', icon: '📳' },
+  {
+    id: 'muyu', name: '木鱼',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><g transform="translate(0.65, 4.1)"><path d="M0.03 13.72c-0.18 1.13 0.63 1.78 1.05 1.98 0.41 0.2 1.11 0 1.39 0 2.05 0.2 6.45 2.31 11.93 2.31 0 0 8.87 0.13 9.55-6.34 0.16-1.68 0.09-4.88-1.25-5.03-1.12-0.15-1.8 0.07-3.22 0.36-0.95 0.19-3.32 0.53-3.74 0.79-4.59 2.09-7.09 3.59-7.78 3.82-0.52 0-0.97-0.13-1.09-1.23 0-0.45 1.72-1.53 2.46-1.7C12 7.96 14 7.65 14.24 7.65c0.34 0 7.76-1.79 7.99-1.95 0.23-0.17 0.47-0.33 0.47-0.92 0-0.27-0.59-0.87-1.27-1.61-0.8-0.87-1.76-1.88-2.47-2.12C17.63 0.37 15.05-0.19 12.8 0.06 7.86 0.62 4.78 6.02 4.51 6.4c-1.14 1.59-2.05 3.61-2.53 4.51C1.52 11.77 0.21 12.93 0.03 13.72z"/></g></svg>`,
+  },
+  {
+    id: 'yinching', name: '引磬',
+    icon: `<svg ${SVG_ATTR}><path d="M7 18c0-5 2.5-8 5-8s5 3 5 8"/><path d="M12 10V7"/><path d="M10 7h4"/><path d="M18 13l1 4"/></svg>`,
+  },
+  {
+    id: 'dingxia', name: '丁夏',
+    icon: `<svg ${SVG_ATTR}><rect x="8" y="8" width="8" height="12" rx="1.5"/><path d="M12 5v3"/><circle cx="12" cy="4" r="1.2" fill="currentColor"/><path d="M8 14h8"/></svg>`,
+  },
+  {
+    id: 'singing_bowl', name: '颂钵',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><g transform="translate(0.25, 5.25)"><path d="M23.648.14c-0.31-1.86-1.35-2.94-3.22-3.34-2.29-0.5-4.6-0.75-6.94-0.82-2.47-0.08-4.950.01-7.40.37-1.190.17-2.370.4-3.510.83-0.930.35-1.550.94-1.881.9C-0.149.520.0411.931.014.31c1.092.73.044.465.885.181.630.423.280.585.010.561.570.033.16-0.144.74-0.481.54-0.333.02-0.844.17-1.992.62-2.643.46-5.822.85-9.44zM2.226.23c0.93-0.561.98-0.773.03-0.953.26-0.576.55-0.679.85-0.451.890.133.790.335.610.910.40.130.790.271.140.510.430.290.440.470.00.74-0.780.47-1.650.68-2.530.86-2.390.5-4.810.6-7.260.66-2.71-0.08-5.45-0.18-8.12-0.85-0.6-0.15-1.19-0.33-1.72-0.66-0.45-0.28-0.46-0.50.01-0.78zm15.1712.31c-3.30.93-6.651.02-9.990.26-3.64-0.83-5.57-3.31-6.28-6.97-0.06-0.3-0.13-0.6-0.07-1.01.170.872.441.153.81.040.74-0.061.48-0.112.21-0.211.0-0.141.940.022.840.451.140.542.330.83.60.710.87-0.061.7-0.272.51-0.610.53-0.221.05-0.441.58-0.671.02-0.452.04-0.513.11-0.140.740.261.510.362.26-0.03-0.013.09-2.476.32-5.567.19zm4.37-7.74c-0.35-0.05-0.7-0.14-1.04-0.24-1.13-0.34-2.23-0.28-3.310.17-0.660.27-1.310.56-1.970.82-1.640.66-3.30.71-4.91-0.07-1.48-0.72-3.0-0.73-4.57-0.52-0.990.14-1.990.28-2.990.0C1.0810.420.729.781.277.9c0.04-0.150.09-0.290.15-0.441.641.053.481.275.321.522.230.34.470.356.710.282.46-0.084.91-0.277.29-0.940.57-0.161.12-0.361.61-0.70.2-0.140.29-0.110.350.110.20.660.331.320.332.010.00.62-0.651.15-1.271.06z"/></g></svg>`,
+  },
+  {
+    id: 'vibrate', name: '震动',
+    icon: `<svg ${SVG_ATTR}><rect x="7" y="4" width="10" height="16" rx="2"/><path d="M4 9c-1 1-1 3 0 4"/><path d="M2.5 7c-1.5 2-1.5 6 0 8"/><path d="M20 9c1 1 1 3 0 4"/><path d="M21.5 7c1.5 2 1.5 6 0 8"/></svg>`,
+  },
 ];
 
 // ===== Wisdom Quotes from Meditation Masters =====

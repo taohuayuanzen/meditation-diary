@@ -15,3 +15,9 @@ desktop.ini
 # Logs
 *.log
 npm-debug.log*
+
+# Project dev log (not for remote)
+DEVLOG.md
+
+# WorkBuddy
+.workbuddy/

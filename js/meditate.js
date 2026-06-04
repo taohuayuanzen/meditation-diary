@@ -7,8 +7,42 @@ let medState = {
   selectedDuration: null,   // null or number (minutes)
   isCustomDuration: false,  // true when user picked custom
   customDurValue: 20,       // current slider value
-  selectedSound: 'yinching',
+  selectedSound: null,
 };
+
+// ===== Init state from last setup or defaults =====
+function initMedState() {
+  const last = getLastSetup();
+  const activeTypes = getActiveTypes();
+  const firstTypeId = activeTypes.length > 0 ? activeTypes[0].id : null;
+  const enabledDurMins = getEnabledDurations();
+
+  if (last) {
+    // 练习过的用户：恢复上次选择
+    // 校验 type 是否仍在启用列表中
+    const typeValid = last.type && activeTypes.find(t => t.id === last.type);
+    medState.selectedType = typeValid ? last.type : firstTypeId;
+    // 校验 duration 是否仍在偏好列表中（非自定义时）
+    if (last.isCustomDuration) {
+      medState.selectedDuration = last.duration || 20;
+      medState.isCustomDuration = true;
+    } else if (last.duration && enabledDurMins.includes(last.duration)) {
+      medState.selectedDuration = last.duration;
+      medState.isCustomDuration = false;
+    } else {
+      // 时长不在偏好中，降级为偏好第一个
+      medState.selectedDuration = enabledDurMins[0] || 10;
+      medState.isCustomDuration = false;
+    }
+    medState.selectedSound = last.sound || SOUNDS[0].id;
+  } else {
+    // 新用户：选中第1项
+    medState.selectedType = firstTypeId;
+    medState.selectedDuration = enabledDurMins[0] || 10;
+    medState.isCustomDuration = false;
+    medState.selectedSound = SOUNDS[0].id;
+  }
+}
 
 // ===== Setup Screen =====
 function getActiveTypes() {
@@ -112,16 +146,9 @@ function selectTypeInSheet(id) {
 
 // ===== Duration Section =====
 function renderDurationSection() {
-  const presets = [
-    { min: 10, label: '10', sub: '分钟' },
-    { min: 20, label: '20', sub: '分钟' },
-    { min: 30, label: '30', sub: '分钟' },
-    { min: 45, label: '45', sub: '分钟' },
-    { min: 60, label: '60', sub: '分钟' },
-  ];
-
+  const enabledDurs = getEnabledDurationOptions();
   const durPresets = document.getElementById('duration-presets');
-  let html = presets.map(d => `
+  let html = enabledDurs.map(d => `
     <div class="duration-preset${!medState.isCustomDuration && medState.selectedDuration === d.min ? ' selected' : ''}"
          onclick="selectDuration(${d.min})">
       ${d.label}<small>${d.sub}</small>
@@ -213,6 +240,14 @@ function checkBeginReady() {
 function beginMeditation() {
   if (!medState.selectedType || !medState.selectedDuration) return;
 
+  // 记住用户选择，下次打开自动恢复
+  saveLastSetup({
+    type: medState.selectedType,
+    duration: medState.selectedDuration,
+    isCustomDuration: medState.isCustomDuration,
+    sound: medState.selectedSound,
+  });
+
   saveSession({
     type: medState.selectedType,
     duration: medState.selectedDuration,
@@ -227,5 +262,6 @@ function beginMeditation() {
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
+  initMedState();
   renderSetup();
 });
