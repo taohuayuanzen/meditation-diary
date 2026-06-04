@@ -1874,6 +1874,46 @@ body {
   background: var(--bg-deep);
 }
 
+/* ===== Duration Toggle (reuses switch styles from type-toggle) ===== */
+.dur-toggle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.dur-toggle-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+.dur-toggle-item:hover {
+  border-color: var(--border-light);
+}
+.dur-toggle-item.on {
+  border-color: var(--accent-gold);
+  background: var(--accent-gold-soft);
+}
+
+.dur-toggle-name {
+  flex: 1;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dur-toggle-item.on .dur-toggle-name {
+  color: var(--accent-gold);
+}
+
 /* ===== Settings List (main settings page) ===== */
 .settings-list {
   margin-top: 16px;

@@ -1,6 +1,7 @@
 // ===== Settings Page Logic =====
 
 let enabledIds = [];
+let enabledDurs = [];
 
 function renderTypeToggles() {
   enabledIds = getEnabledTypeIds();
@@ -54,12 +55,74 @@ function updateCount() {
   }
 }
 
+// ===== Duration Preferences =====
+function renderDurToggles() {
+  enabledDurs = getEnabledDurations();
+  const grid = document.getElementById('dur-toggle-grid');
+  if (!grid) return;
+
+  grid.innerHTML = ALL_DURATIONS.map(d => {
+    const isOn = enabledDurs.includes(d.min);
+    return `
+      <div class="dur-toggle-item${isOn ? ' on' : ''}" data-min="${d.min}" onclick="toggleDuration(${d.min})">
+        <span class="dur-toggle-name">${d.min} 分钟</span>
+        <span class="type-toggle-switch${isOn ? ' active' : ''}"></span>
+      </div>
+    `;
+  }).join('');
+
+  updateDurCount();
+}
+
+function toggleDuration(min) {
+  const idx = enabledDurs.indexOf(min);
+  if (idx > -1) {
+    // Check minimum (3)
+    if (enabledDurs.length <= 3) {
+      showToast('至少需要选择 3 项');
+      return;
+    }
+    enabledDurs.splice(idx, 1);
+  } else {
+    // Check maximum (5)
+    if (enabledDurs.length >= 5) {
+      showToast('最多选择 5 项');
+      return;
+    }
+    enabledDurs.push(min);
+  }
+
+  // Save immediately
+  setEnabledDurations(enabledDurs);
+
+  // Update UI
+  const item = document.querySelector(`.dur-toggle-item[data-min="${min}"]`);
+  const sw = item?.querySelector('.type-toggle-switch');
+  if (item) item.classList.toggle('on', enabledDurs.includes(min));
+  if (sw) sw.classList.toggle('active', enabledDurs.includes(min));
+
+  updateDurCount();
+}
+
+function updateDurCount() {
+  const countEl = document.getElementById('dur-count');
+  if (countEl) {
+    countEl.textContent = `${enabledDurs.length}/${ALL_DURATIONS.length}`;
+    countEl.classList.toggle('warn', enabledDurs.length <= 3 || enabledDurs.length >= 5);
+  }
+}
+
 // ===== Settings List Page (main settings) =====
 function initSettingsList() {
   const subEl = document.getElementById('type-prefs-sub');
   if (subEl) {
     const ids = getEnabledTypeIds();
     subEl.textContent = `${ids.length}/${ALL_TYPES.length} 已启用`;
+  }
+  const durSubEl = document.getElementById('dur-prefs-sub');
+  if (durSubEl) {
+    const durs = getEnabledDurations();
+    durSubEl.textContent = `${durs.length}/${ALL_DURATIONS.length} 已启用`;
   }
 }
 
@@ -162,5 +225,6 @@ function fallbackCopy(text, successMsg) {
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   renderTypeToggles();
+  renderDurToggles();
   initSettingsList();
 });

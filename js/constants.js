@@ -80,14 +80,22 @@ const ALL_TYPES = [
 // Default enabled type IDs (first 10)
 const DEFAULT_TYPE_IDS = ['sitting_zen','walking_zen','life_zen','standing_stake','yoga','pranayama','chanting','baduanjin','yijinjing','taichi'];
 
-const DURATIONS = [
-  { min: 5, label: '5', sub: '初学' },
-  { min: 10, label: '10', sub: '日常' },
-  { min: 15, label: '15', sub: '进阶' },
-  { min: 30, label: '30', sub: '深入' },
-  { min: 45, label: '45', sub: '精进' },
-  { min: 60, label: '60', sub: '禅定' },
+// All available duration options (for duration preferences page)
+const ALL_DURATIONS = [
+  { min: 5,  label: '5',  sub: '分钟' },
+  { min: 10, label: '10', sub: '分钟' },
+  { min: 15, label: '15', sub: '分钟' },
+  { min: 20, label: '20', sub: '分钟' },
+  { min: 30, label: '30', sub: '分钟' },
+  { min: 40, label: '40', sub: '分钟' },
+  { min: 45, label: '45', sub: '分钟' },
+  { min: 50, label: '50', sub: '分钟' },
+  { min: 60, label: '60', sub: '分钟' },
+  { min: 90, label: '90', sub: '分钟' },
 ];
+
+// Default enabled duration minutes (initial preset for new users)
+const DEFAULT_DURATION_MINS = [10, 20, 30, 45, 60];
 
 const BREATH_PHASES = [
   { text: '吸气...', duration: 4000 },

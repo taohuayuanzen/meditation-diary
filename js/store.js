@@ -26,6 +26,7 @@ function deleteEntry(id) {
 // ===== Settings =====
 const DEFAULT_SETTINGS = {
   enabledTypes: ['sitting_zen','walking_zen','life_zen','standing_stake','yoga','pranayama','chanting','baduanjin','yijinjing','taichi'],
+  enabledDurations: [10, 20, 30, 45, 60],  // 时长偏好（分钟）
   lastSetup: null,  // { type, duration, isCustomDuration, sound } — 上次冥想设置
 };
 
@@ -41,6 +42,15 @@ function loadSettings() {
       if (hasStale) {
         merged.enabledTypes = DEFAULT_SETTINGS.enabledTypes;
         saveSettings(merged); // persist the fix
+      }
+    }
+    // Migrate: if saved enabledDurations contains stale mins not in ALL_DURATIONS, reset to default
+    if (merged.enabledDurations && ALL_DURATIONS) {
+      const validMins = new Set(ALL_DURATIONS.map(d => d.min));
+      const hasStaleDur = merged.enabledDurations.some(m => !validMins.has(m));
+      if (hasStaleDur) {
+        merged.enabledDurations = DEFAULT_SETTINGS.enabledDurations;
+        saveSettings(merged);
       }
     }
     return merged;
@@ -62,6 +72,23 @@ function setEnabledTypeIds(ids) {
   const settings = loadSettings();
   settings.enabledTypes = ids;
   saveSettings(settings);
+}
+
+// ===== Duration Preferences =====
+function getEnabledDurations() {
+  const settings = loadSettings();
+  return settings.enabledDurations || DEFAULT_SETTINGS.enabledDurations;
+}
+
+function setEnabledDurations(mins) {
+  const settings = loadSettings();
+  settings.enabledDurations = mins;
+  saveSettings(settings);
+}
+
+function getEnabledDurationOptions() {
+  const mins = getEnabledDurations();
+  return ALL_DURATIONS.filter(d => mins.includes(d.min));
 }
 
 // ===== Last Setup (remember user's last meditation choices) =====
