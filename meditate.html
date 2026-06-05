@@ -73,13 +73,27 @@
     <div class="setup-sheet-handle"></div>
     <div class="setup-sheet-title">自定义时长</div>
     <div class="custom-dur-section">
-      <div class="custom-dur-value" id="custom-dur-value">20</div>
-      <div class="custom-dur-unit">分钟</div>
-      <input type="range" class="custom-dur-slider" id="custom-dur-slider"
-             min="5" max="120" step="5" value="20" oninput="onCustomDurChange(this.value)">
-      <div class="custom-dur-labels">
-        <span>5分钟</span>
-        <span>120分钟</span>
+      <div class="custom-dur-mode">
+        <button class="custom-dur-mode-btn active" id="countdown-mode-btn" onclick="setCountUpMode(false)">倒计时</button>
+        <button class="custom-dur-mode-btn" id="countup-mode-btn" onclick="setCountUpMode(true)">正计时</button>
+      </div>
+      <div id="custom-dur-value-section">
+        <div class="custom-dur-value" id="custom-dur-value">20</div>
+        <div class="custom-dur-unit">分钟</div>
+      </div>
+      <div id="custom-dur-infinity" style="display:none">
+        <svg class="custom-dur-infinity-icon" viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round">
+          <path d="M20 20c0-7.7 6.3-14 14-14s14 6.3 14 14-6.3 14-14 14S20 27.7 20 20z"/>
+          <path d="M40 20c0-7.7 6.3-14 14-14s14 6.3 14 14-6.3 14-14 14-14-6.3-14-14z"/>
+        </svg>
+      </div>
+      <div id="custom-dur-slider-section">
+        <input type="range" class="custom-dur-slider" id="custom-dur-slider"
+               min="5" max="120" step="5" value="20" oninput="onCustomDurChange(this.value)">
+        <div class="custom-dur-labels">
+          <span>5分钟</span>
+          <span>120分钟</span>
+        </div>
       </div>
       <button class="custom-dur-confirm" onclick="confirmCustomDur()">确定</button>
     </div>

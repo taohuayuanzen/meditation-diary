@@ -3,6 +3,7 @@
 let timerState = {
   type: null,
   duration: 0,
+  isCountUp: false,
   sound: 'yinching',
   startTime: null,
   elapsed: 0,
@@ -21,13 +22,14 @@ let moodPicker;
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   const session = loadSession();
-  if (!session || !session.type || !session.duration) {
+  if (!session || !session.type || (!session.duration && !session.isCountUp)) {
     window.location.href = 'meditate.html';
     return;
   }
 
   timerState.type = session.type;
   timerState.duration = session.duration;
+  timerState.isCountUp = session.isCountUp || false;
   timerState.sound = session.sound || 'yinching';
   timerState.startTime = session.startTime || Date.now();
   timerState.elapsed = session.elapsed || 0;
@@ -60,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       saveSession({
         type: timerState.type,
         duration: timerState.duration,
+        isCountUp: timerState.isCountUp,
         sound: timerState.sound,
         startTime: timerState.startTime,
         elapsed: timerState.elapsed,
@@ -87,10 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
 function initTimerUI() {
   const type = ALL_TYPES.find(t => t.id === timerState.type);
   document.getElementById('timer-type-label').textContent = type ? type.name : '冥想';
-  document.getElementById('timer-time').textContent = formatTime(timerState.duration * 60);
 
-  const progress = document.getElementById('timer-progress');
-  progress.style.strokeDashoffset = '0';
+  if (timerState.isCountUp) {
+    document.getElementById('timer-time').textContent = formatTime(0);
+    // Hide progress ring in count-up mode
+    const ringSvg = document.querySelector('.timer-ring-svg');
+    if (ringSvg) ringSvg.style.display = 'none';
+  } else {
+    document.getElementById('timer-time').textContent = formatTime(timerState.duration * 60);
+    const progress = document.getElementById('timer-progress');
+    progress.style.strokeDashoffset = '0';
+  }
 
   // Initial state
   updateFinishBtn(false);
@@ -118,42 +128,73 @@ function startTimer() {
 function startTimerCountdown() {
   clearInterval(timerState.timerInterval);
 
-  const totalSeconds = timerState.duration * 60;
-  const circumference = 2 * Math.PI * 120;
+  if (timerState.isCountUp) {
+    // ===== Count-Up Mode =====
+    timerState.timerInterval = setInterval(() => {
+      if (!timerState.running || timerState.paused) return;
 
-  timerState.timerInterval = setInterval(() => {
-    if (!timerState.running || timerState.paused) return;
+      timerState.elapsed = Math.floor((Date.now() - timerState.startTime) / 1000);
+      document.getElementById('timer-time').textContent = formatTime(timerState.elapsed);
 
-    timerState.elapsed = Math.floor((Date.now() - timerState.startTime) / 1000);
-    const remaining = Math.max(0, totalSeconds - timerState.elapsed);
+      // Update button visibility
+      updateCancelBtn();
+      updateMoodBtn();
 
-    document.getElementById('timer-time').textContent = formatTime(remaining);
+      // Persist session every 10 seconds
+      if (timerState.elapsed % 10 === 0) {
+        saveSession({
+          type: timerState.type,
+          duration: timerState.duration,
+          isCountUp: timerState.isCountUp,
+          sound: timerState.sound,
+          startTime: timerState.startTime,
+          elapsed: timerState.elapsed,
+          paused: false,
+          moodBefore: timerState.moodBefore,
+        });
+      }
+      // Count-up never auto-finishes — user must manually complete
+    }, 1000);
+  } else {
+    // ===== Countdown Mode (original) =====
+    const totalSeconds = timerState.duration * 60;
+    const circumference = 2 * Math.PI * 120;
 
-    const progress = document.getElementById('timer-progress');
-    const offset = (timerState.elapsed / totalSeconds) * circumference;
-    progress.style.strokeDashoffset = Math.min(offset, circumference);
+    timerState.timerInterval = setInterval(() => {
+      if (!timerState.running || timerState.paused) return;
 
-    // Update button visibility based on elapsed time
-    updateCancelBtn();
-    updateMoodBtn();
+      timerState.elapsed = Math.floor((Date.now() - timerState.startTime) / 1000);
+      const remaining = Math.max(0, totalSeconds - timerState.elapsed);
 
-    // Persist session every 10 seconds
-    if (timerState.elapsed % 10 === 0) {
-      saveSession({
-        type: timerState.type,
-        duration: timerState.duration,
-        sound: timerState.sound,
-        startTime: timerState.startTime,
-        elapsed: timerState.elapsed,
-        paused: false,
-        moodBefore: timerState.moodBefore,
-      });
-    }
+      document.getElementById('timer-time').textContent = formatTime(remaining);
 
-    if (remaining <= 0) {
-      finishMeditation();
-    }
-  }, 1000);
+      const progress = document.getElementById('timer-progress');
+      const offset = (timerState.elapsed / totalSeconds) * circumference;
+      progress.style.strokeDashoffset = Math.min(offset, circumference);
+
+      // Update button visibility based on elapsed time
+      updateCancelBtn();
+      updateMoodBtn();
+
+      // Persist session every 10 seconds
+      if (timerState.elapsed % 10 === 0) {
+        saveSession({
+          type: timerState.type,
+          duration: timerState.duration,
+          isCountUp: timerState.isCountUp,
+          sound: timerState.sound,
+          startTime: timerState.startTime,
+          elapsed: timerState.elapsed,
+          paused: false,
+          moodBefore: timerState.moodBefore,
+        });
+      }
+
+      if (remaining <= 0) {
+        finishMeditation();
+      }
+    }, 1000);
+  }
 }
 
 function startBreathGuide() {
@@ -251,6 +292,7 @@ function togglePause() {
     saveSession({
       type: timerState.type,
       duration: timerState.duration,
+      isCountUp: timerState.isCountUp,
       sound: timerState.sound,
       startTime: timerState.startTime,
       elapsed: timerState.elapsed,
@@ -268,6 +310,7 @@ function togglePause() {
     saveSession({
       type: timerState.type,
       duration: timerState.duration,
+      isCountUp: timerState.isCountUp,
       sound: timerState.sound,
       startTime: timerState.startTime,
       elapsed: timerState.elapsed,
@@ -313,6 +356,7 @@ function finishMeditation() {
   saveSession({
     type: timerState.type,
     duration: timerState.duration,
+    isCountUp: timerState.isCountUp,
     sound: timerState.sound,
     elapsed: timerState.elapsed,
     minutes: minutes,

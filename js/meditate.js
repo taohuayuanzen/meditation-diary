@@ -2,11 +2,15 @@
 
 const MAX_VISIBLE_TYPES = 5;
 
+// SVG infinity icon (reused in duration section)
+const INFINITY_SVG = '<svg class="dur-infinity-icon" viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M20 20c0-7.7 6.3-14 14-14s14 6.3 14 14-6.3 14-14 14S20 27.7 20 20z"/><path d="M40 20c0-7.7 6.3-14 14-14s14 6.3 14 14-6.3 14-14 14-14-6.3-14-14z"/></svg>';
+
 let medState = {
   selectedType: null,
   selectedDuration: null,   // null or number (minutes)
   isCustomDuration: false,  // true when user picked custom
   customDurValue: 20,       // current slider value
+  isCountUp: false,         // true when count-up mode (no preset duration)
   selectedSound: null,
 };
 
@@ -24,8 +28,13 @@ function initMedState() {
     medState.selectedType = typeValid ? last.type : firstTypeId;
     // 校验 duration 是否仍在偏好列表中（非自定义时）
     if (last.isCustomDuration) {
-      medState.selectedDuration = last.duration || 20;
       medState.isCustomDuration = true;
+      if (last.isCountUp) {
+        medState.selectedDuration = 0;
+        medState.isCountUp = true;
+      } else {
+        medState.selectedDuration = last.duration || 20;
+      }
     } else if (last.duration && enabledDurMins.includes(last.duration)) {
       medState.selectedDuration = last.duration;
       medState.isCustomDuration = false;
@@ -157,11 +166,11 @@ function renderDurationSection() {
 
   // Custom button
   const customSelected = medState.isCustomDuration;
-  const customLabel = customSelected ? medState.selectedDuration : '...';
+  const customLabel = customSelected ? (medState.isCountUp ? INFINITY_SVG : medState.selectedDuration) : '...';
   html += `
     <div class="duration-custom-btn${customSelected ? ' selected' : ''}"
          onclick="openDurSheet()">
-      ${customLabel}<small>自定义</small>
+      ${customLabel}<small>${medState.isCountUp ? '正计时' : '自定义'}</small>
     </div>
   `;
 
@@ -171,6 +180,7 @@ function renderDurationSection() {
 function selectDuration(min) {
   medState.selectedDuration = min;
   medState.isCustomDuration = false;
+  medState.isCountUp = false;
   renderSetup();
 }
 
@@ -179,8 +189,13 @@ function openDurSheet() {
   // Pre-fill slider with current custom value or last selected
   const slider = document.getElementById('custom-dur-slider');
   const display = document.getElementById('custom-dur-value');
+  const sliderSection = document.getElementById('custom-dur-slider-section');
+  const valueSection = document.getElementById('custom-dur-value-section');
 
-  if (medState.isCustomDuration && medState.selectedDuration) {
+  // Restore count-up mode
+  setCountUpMode(medState.isCountUp);
+
+  if (medState.isCustomDuration && medState.selectedDuration && !medState.isCountUp) {
     slider.value = medState.selectedDuration;
     display.textContent = medState.selectedDuration;
     medState.customDurValue = medState.selectedDuration;
@@ -201,9 +216,30 @@ function onCustomDurChange(val) {
   document.getElementById('custom-dur-value').textContent = val;
 }
 
+// Toggle between countdown and count-up mode in the custom duration sheet
+function setCountUpMode(isCountUp) {
+  medState.isCountUp = isCountUp;
+
+  const countdownBtn = document.getElementById('countdown-mode-btn');
+  const countupBtn = document.getElementById('countup-mode-btn');
+  const sliderSection = document.getElementById('custom-dur-slider-section');
+  const valueSection = document.getElementById('custom-dur-value-section');
+  const infinitySection = document.getElementById('custom-dur-infinity');
+
+  if (countdownBtn) countdownBtn.classList.toggle('active', !isCountUp);
+  if (countupBtn) countupBtn.classList.toggle('active', isCountUp);
+  if (sliderSection) sliderSection.style.display = isCountUp ? 'none' : '';
+  if (valueSection) valueSection.style.display = isCountUp ? 'none' : '';
+  if (infinitySection) infinitySection.style.display = isCountUp ? '' : 'none';
+}
+
 function confirmCustomDur() {
-  const val = parseInt(document.getElementById('custom-dur-slider').value);
-  medState.selectedDuration = val;
+  if (medState.isCountUp) {
+    medState.selectedDuration = 0; // 0 = count-up mode (no preset)
+  } else {
+    const val = parseInt(document.getElementById('custom-dur-slider').value);
+    medState.selectedDuration = val;
+  }
   medState.isCustomDuration = true;
   closeDurSheet();
   renderSetup();
@@ -233,24 +269,26 @@ function previewSound(id) {
 
 // ===== Begin =====
 function checkBeginReady() {
-  const ready = medState.selectedType && medState.selectedDuration;
+  const ready = medState.selectedType && (medState.selectedDuration || medState.isCountUp);
   document.getElementById('begin-btn').disabled = !ready;
 }
 
 function beginMeditation() {
-  if (!medState.selectedType || !medState.selectedDuration) return;
+  if (!medState.selectedType || (!medState.selectedDuration && !medState.isCountUp)) return;
 
   // 记住用户选择，下次打开自动恢复
   saveLastSetup({
     type: medState.selectedType,
-    duration: medState.selectedDuration,
+    duration: medState.isCountUp ? 0 : medState.selectedDuration,
     isCustomDuration: medState.isCustomDuration,
+    isCountUp: medState.isCountUp,
     sound: medState.selectedSound,
   });
 
   saveSession({
     type: medState.selectedType,
-    duration: medState.selectedDuration,
+    duration: medState.isCountUp ? 0 : medState.selectedDuration,
+    isCountUp: medState.isCountUp,
     sound: medState.selectedSound || 'yinching',
     startTime: Date.now(),
     elapsed: 0,
